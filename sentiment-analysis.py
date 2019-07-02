@@ -7,7 +7,7 @@ import csv
 import re
 import string
 import pdb
-
+# This first part seems to be unneccessary (Chief)
 def calculate_value(word_score):
     #create dictionary csv (with assigned values to words), average occurence of words and return total value 
     
