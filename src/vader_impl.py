@@ -1,25 +1,22 @@
 #!/usr/bin/python3
 
 import pandas as pd
-from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.corpus import stopwords
-import matplotlib.pyplot as plt
-from collections import Counter
-from wordcloud import WordCloud,STOPWORDS
-import string
-import re
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-df_wp=pd.read_excel('../docs/ABIPerformanceFeedbackALL.xlsx')
+print("All inputs are case sensitive!")
+file = input("Please enter the path to the .xlsx file to parse: ")
+column = input("Please enter the name of the column with text to parse: ")
 
-df_wp=df_wp.rename(columns = {'Comments from Late Show Page':'Text'})
+df_wp=pd.read_excel(file)
 df_wp.dropna()
 
-df_wplist=df_wp['Text'].tolist()
-df_wpstr=str(df_wplist)
+df_wplist=df_wp[column].tolist()
 
 analyzer=SentimentIntensityAnalyzer()
+
+counter = 0
 for sentence in df_wplist:
     vs=analyzer.polarity_scores(sentence)
-    scores=("{:-<65} {}".format(sentence, str(vs)))
+    scores=("Sentence {}: {}".format(counter, str(vs)))
     print(scores)
+    counter += 1
