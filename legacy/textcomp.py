@@ -8,12 +8,12 @@ import string
 import re
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-df_wp=pd.read_excel('6-stringColbert.xlsx')
+df_wp=pd.read_excel('../docs/ABIPerformanceFeedbackALL.xlsx')
 
-df_wp=df_wp.rename(columns = {'Comments from Late Show Page':'Comments'})
+df_wp=df_wp.rename(columns = {'Comments from Late Show Page':'Text'})
 df_wp.dropna()
 
-df_wplist=df_wp['Comments'].tolist()
+df_wplist=df_wp['Text'].tolist()
 df_wpstr=str(df_wplist)
 
 df_keylist=['trust','understanding','builds trust','strengthens bonds','inspire','national values','national beliefs','preserves customs',
