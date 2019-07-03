@@ -27,7 +27,7 @@ actual_dissatisfied = 0
 actual_neutral = 0
 actual_satisfied = 0
 actual_very_satisfied = 0
-
+'''
 for rating in rating_list:
     if rating == 0:
         actual_very_dissatisfied += 1
@@ -39,7 +39,7 @@ for rating in rating_list:
         actual_satisfied += 1
     elif rating == 4:
         actual_very_satisfied += 1
-
+'''
 # this will classify each sentence with the TextBlob model, and will report TextBlob's
 # accuracy once it is finished.
 counter = 0
@@ -54,16 +54,28 @@ for sentence in feedback_list:
     scores = ("Sentence {}: {}".format(counter, analyzer.sentiment))
     polarity = analyzer.sentiment.polarity
 
-    if polarity < -0.25:
-        reported_very_dissatisfied += 1
-    elif polarity >= -0.25 and polarity < -0.5:
-        reported_dissatisfied += 1
-    elif polarity >= -0.5 and polarity < 0.5:
-        reported_neutral += 1
-    elif polarity >= 0.5 and polarity < 0.75:
-        reported_satisfied += 1
-    elif polarity >= 0.75:
-        reported_very_satisfied += 1
+    
+    rating = rating_list[counter]
+    if rating == 0:
+        if polarity < -0.5:
+            reported_very_dissatisfied += 1
+        actual_very_dissatisfied += 1
+    elif rating == 1:
+        if polarity >= -0.5 and polarity < 0.1:
+            reported_dissatisfied += 1
+        actual_dissatisfied += 1
+    elif rating == 2:
+        if polarity >= -0.1 and polarity < 0.25:
+            reported_neutral += 1
+        actual_neutral += 1
+    elif rating == 3:
+        if polarity >= 0.25 and polarity < 0.5:
+            reported_satisfied += 1
+        actual_satisfied += 1
+    elif rating == 4:
+        if polarity >= 0.5:
+            reported_very_satisfied += 1
+        actual_very_satisfied += 1
 
     print(scores)
     counter += 1
