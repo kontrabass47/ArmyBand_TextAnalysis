@@ -2,17 +2,17 @@
 
 import sys
 import pandas as pd
-from .vader_impl import Vader
+from vader_impl import Vader
 
 class TextAnalysis:
-
-    isFile = True
+    def __init__(self):
+        self.isFile = True
 
     def read(self):
-        if (".xlsx" in sys.argv[0]) or (".csv" in sys.argv[0]):
+        if (".xlsx" in sys.argv[1]) or (".csv" in sys.argv[1]):
             self.isFile = True
 
-            file = sys.argv[0]
+            file = '../docs/' + sys.argv[1]
             column = input("Please enter the name of the column with text to parse: ")
 
             df_wp = pd.read_excel(file)
@@ -26,3 +26,6 @@ class TextAnalysis:
             self.isFile = False
 
 
+if __name__ == "__main__":
+    textobj = TextAnalysis()
+    textobj.read()
