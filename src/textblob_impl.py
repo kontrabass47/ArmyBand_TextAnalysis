@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-from textblob import TextBlob
+from textblob import TextBlob as TextBlobAnalyzer
+from textblob.sentiments import NaiveBayesAnalyzer
 
 # This class uses the textblob library to performance sentiment analysis
 # on a provided list of sentences.
@@ -17,11 +18,8 @@ class TextBlob():
     # analyzes the list of sentences passed in and populates the object's list
     # sentiment objects
     def analyzeFile(self, list):
-        print("All inputs are case sensitive!")
         counter = 0
-        for sentence in feedback_list:
-            analyzer = TextBlob(sentence)
-            self.sentimentList.append(analyzer)
-            scores = ("Sentence {}: {}".format(counter, analyzer.sentiment))
-            print(scores)
+        for sentence in list:
+            analyzer = TextBlobAnalyzer(sentence)
+            self.sentimentList.append(analyzer.sentiment)
             counter += 1

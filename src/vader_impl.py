@@ -4,7 +4,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 class Vader():
     def __init__(self):
-        self.sentimentList = [] # Contains a list of vaderSentiment objects
+        self.sentimentList = [] # Contains as list of vaderSentiment objects (sentimentList[0]["neg"] accesses negative
+        # element of first object
 
 
 
@@ -17,7 +18,5 @@ class Vader():
         for sentence in list:
             vs = analyzer.polarity_scores(sentence)
             self.sentimentList.append(vs)
-            scores = ("Sentence {}: {}".format(counter, str(vs)))
-            print(scores + " " )
             counter += 1
 
