@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from textblob import TextBlob as TextBlobAnalyzer
-from textblob.sentiments import NaiveBayesAnalyzer
 
 # This class uses the textblob library to performance sentiment analysis
 # on a provided list of sentences.
