@@ -4,7 +4,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 class Vader():
     def __init__(self):
-        self.sentimentList = [] # Contains as list of vaderSentiment objects
+        self.sentimentList = [] # Contains a list of vaderSentiment objects
 
 
 
