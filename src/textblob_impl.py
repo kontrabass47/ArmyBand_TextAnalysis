@@ -14,6 +14,8 @@ class TextBlob():
     #     the sentence is
     def __init__(self):
         self.sentimentList = []
+        self.negcount = 0
+        self.poscount = 0
 
     # analyzes the list of sentences passed in and populates the object's list
     # sentiment objects
@@ -21,5 +23,9 @@ class TextBlob():
         counter = 0
         for sentence in list:
             analyzer = TextBlobAnalyzer(sentence)
+            if analyzer.sentiment.polarity >= 0.001:
+                self.poscount += 1
+            if analyzer.sentiment.polarity <= -0.001:
+                self.negcount += 1
             self.sentimentList.append(analyzer.sentiment)
             counter += 1

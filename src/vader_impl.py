@@ -6,6 +6,8 @@ class Vader():
     def __init__(self):
         self.sentimentList = [] # Contains as list of vaderSentiment objects (sentimentList[0]["neg"] accesses negative
         # element of first object
+        self.negcount = 0
+        self.poscount = 0
 
 
 
@@ -17,6 +19,10 @@ class Vader():
         counter = 0
         for sentence in list:
             vs = analyzer.polarity_scores(sentence)
+            if not vs['neg'] > 0.05:
+                self.poscount += 1
+            if not vs['pos'] > 0.05:
+                self.negcount += 1
             self.sentimentList.append(vs)
             counter += 1
 
