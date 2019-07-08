@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import tkinter
 import sys
 import pandas as pd
 from vader_impl import Vader
@@ -21,9 +22,11 @@ class TextAnalysis:
 
             vader = Vader()
             vader.analyzeFile(sentencelist)
+            print(vader.sentimentList[0]["neg"])
 
         else:
             self.isFile = False
+            # process sentence
 
 
 if __name__ == "__main__":
