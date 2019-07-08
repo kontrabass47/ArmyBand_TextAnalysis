@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 
 import pandas as pd
+from .text_analysis import TextAnalysis
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-class Vader:
-    vaderSentimentList = [] # Contains as list of vaderSentiment objects
+class Vader(TextAnalysis):
+    def __init__(self):
+        self.sentimentList = [] # Contains as list of vaderSentiment objects
 
-    def vaderAnalyzer(self):
-        vader = Vader()
+
+
+    def analyzeFile(self, list):
         print("All inputs are case sensitive!")
         file = input("Please enter the path to the .xlsx file to parse: ")
         column = input("Please enter the name of the column with text to parse: ")
@@ -22,7 +25,7 @@ class Vader:
         counter = 0
         for sentence in df_wplist:
             vs = analyzer.polarity_scores(sentence)
-            vader.sentimentList.append(vs)
+            self.sentimentList.append(vs)
             scores = ("Sentence {}: {}".format(counter, str(vs)))
             print(scores + " " )
             counter += 1
