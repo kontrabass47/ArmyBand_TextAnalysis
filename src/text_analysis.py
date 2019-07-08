@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-import tkinter
 import sys
 import pandas as pd
 from vader_impl import Vader
+from textblob_impl import TextBlob
 
 class TextAnalysis:
     def __init__(self):
@@ -22,11 +22,18 @@ class TextAnalysis:
 
             vader = Vader()
             vader.analyzeFile(sentencelist)
-            print(vader.sentimentList[0]["neg"])
+            print(vader.sentimentList[1]["compound"])
+
+            textblob = TextBlob()
+            textblob.analyzeFile(sentencelist)
+            print(textblob.sentimentList[1])
 
         else:
             self.isFile = False
             # process sentence
+
+   # def normalize(self):
+
 
 
 if __name__ == "__main__":
