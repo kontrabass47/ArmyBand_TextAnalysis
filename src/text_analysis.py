@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 from vader_impl import Vader
 from textblob_impl import TextBlob
+from naive_bayes_impl import NaiveBayes
 from keyword_extraction import KeywordExtractor
 
 class TextAnalysis:
@@ -21,20 +22,26 @@ class TextAnalysis:
 
             df_wp = pd.read_excel(file)
             df_wp.dropna()
-            self.sentencelist = df_wp[column].tolist()
 
+            sentencelist = df_wp[column].tolist()
+
+            vader = Vader()
+            vader.analyzeList(sentencelist)
+            print('Vader Positive: {} Vader Negative: {}', vader.poscount, vader.negcount)
+            print('Vader Polarity Average: ', vader.polarity)
+
+            textblob = TextBlob()
+            textblob.analyzeList(sentencelist)
+            print('TextBlob Positive: {} TextBlob Negative: {}', textblob.poscount, textblob.negcount)
+            print('TextBlob Polarity Average: ', textblob.polarity)
+
+            naivebayes = NaiveBayes()
+            naivebayes.analyzeList(sentencelist)
+            print('NaiveBayes Positive: {} NaiveBayes Negative: {}', naivebayes.poscount, naivebayes.negcount)
 
         else:
             self.isFile = False
-        
-        # process sentence
-        vader = Vader()
-        vader.analyzeFile(self.sentencelist)
-        print(vader.sentimentList[1]["compound"])
 
-        textblob = TextBlob()
-        textblob.analyzeFile(self.sentencelist)
-        print(textblob.sentimentList[1])
 
     def extractKeywords(self):
         extractor = KeywordExtractor()
@@ -42,7 +49,6 @@ class TextAnalysis:
         print(keywords)
 
     # def normalize(self):
-
 
 
 if __name__ == "__main__":
