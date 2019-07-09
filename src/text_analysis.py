@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 from vader_impl import Vader
 from textblob_impl import TextBlob
+from naive_bayes import NaiveBayes
 
 class TextAnalysis:
     def __init__(self):
@@ -21,12 +22,18 @@ class TextAnalysis:
             sentencelist = df_wp[column].tolist()
 
             vader = Vader()
-            vader.analyzeFile(sentencelist)
-            print(vader.sentimentList[1]["compound"])
+            vader.analyzeList(sentencelist)
+            print('Vader Positive: {} Vader Negative: {}', vader.poscount, vader.negcount)
+            print('Vader Polarity Average: ', vader.polarity)
 
             textblob = TextBlob()
-            textblob.analyzeFile(sentencelist)
-            print(textblob.sentimentList[1])
+            textblob.analyzeList(sentencelist)
+            print('TextBlob Positive: {} TextBlob Negative: {}', textblob.poscount, textblob.negcount)
+            print('TextBlob Polarity Average: ', textblob.polarity)
+
+            naivebayes = NaiveBayes()
+            naivebayes.analyzeList(sentencelist)
+            print('NaiveBayes Positive: {} NaiveBayes Negative: {}', naivebayes.poscount, naivebayes.negcount)
 
         else:
             self.isFile = False

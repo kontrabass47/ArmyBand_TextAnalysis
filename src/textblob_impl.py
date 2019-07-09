@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from textblob import TextBlob as TextBlobAnalyzer
-from textblob.sentiments import NaiveBayesAnalyzer
 
 # This class uses the textblob library to performance sentiment analysis
 # on a provided list of sentences.
@@ -16,16 +15,22 @@ class TextBlob():
         self.sentimentList = []
         self.negcount = 0
         self.poscount = 0
+        self.polarity = 0
 
     # analyzes the list of sentences passed in and populates the object's list
     # sentiment objects
-    def analyzeFile(self, list):
+    def analyzeList(self, list):
         counter = 0
         for sentence in list:
             analyzer = TextBlobAnalyzer(sentence)
             if analyzer.sentiment.polarity >= 0.001:
                 self.poscount += 1
+                counter += 1
+
             if analyzer.sentiment.polarity <= -0.001:
                 self.negcount += 1
+                counter += 1
+
+            self.polarity += analyzer.sentiment.polarity
             self.sentimentList.append(analyzer.sentiment)
-            counter += 1
+        self.polarity = self.polarity / counter
