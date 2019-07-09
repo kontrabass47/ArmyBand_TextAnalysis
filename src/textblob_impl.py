@@ -2,6 +2,7 @@
 
 from textblob import TextBlob as TextBlobAnalyzer
 from sentiment_analyzer import SentimentAnalyzer
+from sentiment_analyzer import SentimentObject
 # This class uses the textblob library to performance sentiment analysis
 # on a provided list of sentences.
 class TextBlob(SentimentAnalyzer):
@@ -18,16 +19,22 @@ class TextBlob(SentimentAnalyzer):
     # sentiment objects
     def analyzeList(self, list):
         counter = 0
+        obj = SentimentObject()
         for sentence in list:
             analyzer = TextBlobAnalyzer(sentence)
             if analyzer.sentiment.polarity >= 0.001:
                 self.poscount += 1
                 counter += 1
-
-            if analyzer.sentiment.polarity <= -0.001:
+                obj.classifier = "positive"
+            elif analyzer.sentiment.polarity <= -0.001:
                 self.negcount += 1
                 counter += 1
+                obj.classifier = "negative"
+            else:
+                obj.classifier = "neutral"
+            obj.sentence = sentence
+            obj.aggregate = analyzer.sentiment.polarity
+            self.sentimentList.append(obj)
 
             self.polarity += analyzer.sentiment.polarity
-            self.sentimentList.append(analyzer.sentiment)
         self.polarity = self.polarity / counter

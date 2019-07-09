@@ -1,6 +1,7 @@
 from textblob import Blobber
 from textblob.sentiments import NaiveBayesAnalyzer
 from sentiment_analyzer import SentimentAnalyzer
+from sentiment_analyzer import SentimentObject
 
 class NaiveBayes(SentimentAnalyzer):
 

@@ -2,6 +2,7 @@
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from sentiment_analyzer import SentimentAnalyzer
+from sentiment_analyzer import SentimentObject
 
 class Vader(SentimentAnalyzer):
 
