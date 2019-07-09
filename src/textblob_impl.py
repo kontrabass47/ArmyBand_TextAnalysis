@@ -1,21 +1,18 @@
 #!/usr/bin/python3
 
 from textblob import TextBlob as TextBlobAnalyzer
-
+from sentiment import Sentiment
 # This class uses the textblob library to performance sentiment analysis
 # on a provided list of sentences.
-class TextBlob():
+class TextBlob(Sentiment):
 
     # sentimentList - list of textblob sentiment analysis objects.
     # each object has access to sentiment.polarity and sentiment.subjectivity
     #   - polarity is a scale from -1.0 to 1.0, from negative to positive
     #   - subjectivity is a scale from 0.0 to 1.0, a measure of how opinionated
     #     the sentence is
-    def __init__(self):
-        self.sentimentList = []
-        self.negcount = 0
-        self.poscount = 0
-        self.polarity = 0
+    #def __init__(self):
+
 
     # analyzes the list of sentences passed in and populates the object's list
     # sentiment objects

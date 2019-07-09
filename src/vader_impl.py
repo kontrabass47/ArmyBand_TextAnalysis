@@ -1,16 +1,9 @@
 #!/usr/bin/python3
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from sentiment import Sentiment
 
-class Vader():
-    def __init__(self):
-        self.sentimentList = [] # Contains as list of vaderSentiment objects (sentimentList[0]["neg"] accesses negative
-        # element of first object
-        self.negcount = 0
-        self.poscount = 0
-        self.polarity = 0
-
-
+class Vader(Sentiment):
 
     def analyzeList(self, list):
         print("All inputs are case sensitive!")

@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 from vader_impl import Vader
 from textblob_impl import TextBlob
-from naive_bayes import NaiveBayes
+from naive_bayes_impl import NaiveBayes
 
 class TextAnalysis:
     def __init__(self):
@@ -40,7 +40,6 @@ class TextAnalysis:
             # process sentence
 
    # def normalize(self):
-
 
 
 if __name__ == "__main__":
