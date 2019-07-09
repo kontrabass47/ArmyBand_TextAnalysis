@@ -1,5 +1,5 @@
 
-class Sentiment():
+class SentimentAnalyzer():
     def __init__(self):
         self.sentimentList = []
         self.negcount = 0

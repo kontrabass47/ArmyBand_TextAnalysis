@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from sentiment import Sentiment
+from sentiment_analyzer import SentimentAnalyzer
 
-class Vader(Sentiment):
+class Vader(SentimentAnalyzer):
 
     def analyzeList(self, list):
-        print("All inputs are case sensitive!")
 
         analyzer = SentimentIntensityAnalyzer()
 
