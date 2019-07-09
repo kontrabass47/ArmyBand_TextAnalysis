@@ -4,11 +4,8 @@ import sys
 import pandas as pd
 from vader_impl import Vader
 from textblob_impl import TextBlob
-<<<<<<< HEAD
 from naive_bayes_impl import NaiveBayes
-=======
 from keyword_extraction import KeywordExtractor
->>>>>>> 04cb1c3d77568ec180ba015b41fab68f2aa9b215
 
 class TextAnalysis:
     sentencelist = []
@@ -25,7 +22,7 @@ class TextAnalysis:
 
             df_wp = pd.read_excel(file)
             df_wp.dropna()
-<<<<<<< HEAD
+
             sentencelist = df_wp[column].tolist()
 
             vader = Vader()
@@ -41,22 +38,10 @@ class TextAnalysis:
             naivebayes = NaiveBayes()
             naivebayes.analyzeList(sentencelist)
             print('NaiveBayes Positive: {} NaiveBayes Negative: {}', naivebayes.poscount, naivebayes.negcount)
-=======
-            self.sentencelist = df_wp[column].tolist()
-
->>>>>>> 04cb1c3d77568ec180ba015b41fab68f2aa9b215
 
         else:
             self.isFile = False
-        
-        # process sentence
-        vader = Vader()
-        vader.analyzeFile(self.sentencelist)
-        print(vader.sentimentList[1]["compound"])
 
-        textblob = TextBlob()
-        textblob.analyzeFile(self.sentencelist)
-        print(textblob.sentimentList[1])
 
     def extractKeywords(self):
         extractor = KeywordExtractor()
