@@ -12,3 +12,6 @@ class SentimentObject():
         self.sentence = ""
         self.aggregate = 0
         self.classifier = ""
+
+    def __str__(self):
+        return "Sentence: {} \nAggregate: {} \nClassifier: {}".format(self.sentence, self.aggregate, self.classifier)
