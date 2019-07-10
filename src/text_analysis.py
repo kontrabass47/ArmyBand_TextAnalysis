@@ -22,20 +22,20 @@ class TextAnalysis:
 
         vader = Vader()
         vader.analyzeList(sentencelist)
-        print('Vader Positive: {} Vader Negative: {}', 
-                vader.poscount, vader.negcount)
+        print('Vader Positive: {} Vader Negative: {}'
+                .format(vader.poscount, vader.negcount))
         print('Vader Polarity Average: ', vader.polarity)
 
         textblob = TextBlob()
         textblob.analyzeList(sentencelist)
-        print('TextBlob Positive: {} TextBlob Negative: {}', 
-                textblob.poscount, textblob.negcount)
+        print('TextBlob Positive: {} TextBlob Negative: {}'
+                .format(textblob.poscount, textblob.negcount))
         print('TextBlob Polarity Average: ', textblob.polarity)
 
         naivebayes = NaiveBayes()
         naivebayes.analyzeList(sentencelist)
-        print('NaiveBayes Positive: {} NaiveBayes Negative: {}', 
-                naivebayes.poscount, naivebayes.negcount)
+        print('NaiveBayes Positive: {} NaiveBayes Negative: {}'
+                .format(naivebayes.poscount, naivebayes.negcount))
         #print('Vader: ', vader.sentimentList[0])
         #print('TextBlob: ', textblob.sentimentList[0])
         #print('NaiveBayes: ', naivebayes.sentimentList[0])

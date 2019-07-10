@@ -5,7 +5,11 @@ This project aims to analyze feedback of the Army Band through the use of text c
 ## Technology Used
 [TextBlob](https://textblob.readthedocs.io/en/dev/) and [Vader](https://github.com/cjhutto/vaderSentiment) are used to analyze the text.  
 [rake-nltk](https://github.com/csurfer/rake-nltk) is used to extract key words from text.  
-[Pandas](https://pandas.pydata.org/) is used to open and read the data files.
+[Pandas](https://pandas.pydata.org/) is used to open and read the data files.  
+[tkinter](https://docs.python.org/3/library/tkinter.html) is used to create the graphical UI  
+
+## Other references
+None yet
 
 ## Getting Started
 Make sure your Python version is 3.x or later.  

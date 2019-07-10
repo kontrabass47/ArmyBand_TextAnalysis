@@ -24,6 +24,8 @@ class Vader(SentimentAnalyzer):
         else:
             obj.classifier = "neutral"
         '''
+        print("Vader Result")
+        print(vs)
         if vs['compound'] > 0.05:
             self.poscount += 1
             obj.classifier = "positive"
