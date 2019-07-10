@@ -1,12 +1,24 @@
-from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry, LEFT, N, W
+from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry
+from tkinter import LEFT, N, W, filedialog, messagebox
+from tkinter.filedialog import askopenfilename
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
 
-# Receives a file that has been uploaded, sends it to be analyzed and then
-# displays the results
+# Receives a file that has been uploaded. NOTHING is done until the submit
+# button has been clicked
 def uploadFile(event):
-    uploadResultsString.set("uploaded file results go here AHHH BUTTON")
+    file = askopenfilename()
+    uploadFileButtonText.set(file)
+
+# Submits the selected file to be analyzed, and then displays the results
+def submitFile(event):
+    fileName = uploadFileButtonText.get()
+    if fileName == "Choose file":
+        messagebox.showinfo("Error", "No file selected")
+    else:
+        uploadResultsString.set(fileName)
+
 
 # Receives a string, analyzes it, and displays the results
 def submitText(event):
@@ -29,17 +41,21 @@ root = Tk()
 root.title("Sentiment Analysis Tool")
 
 uploadResultsString = StringVar()
+uploadFileButtonText = StringVar()
 uploadResultsString.set("uploaded file results go here")
+uploadFileButtonText.set("Choose file")
 textResultsString = StringVar()
 textLabel = Label(root, text="Enter Text")
 uploadFileLabel = Label(root, text="Upload File")
 textResultsLabel = Label(root, anchor=N, textvariable=textResultsString, height=8)
 fileResultsLabel = Label(root, anchor=N, textvariable=uploadResultsString, height=15)
 textEntry = Entry(root, width=50)
-uploadFileButton = Button(root, text="Choose file")
+uploadFileButton = Button(root, textvariable=uploadFileButtonText)
 uploadFileButton.bind("<Button-1>", uploadFile)
 textSubmitButton = Button(root, text="Submit")
 textSubmitButton.bind("<Button-1>", submitText)
+fileSubmitButton = Button(root, text="Submit")
+fileSubmitButton.bind("<Button-1>", submitFile)
 
 # All widgets are organized in a grid here
 textLabel.grid(row=0, column=0, sticky=W)
@@ -49,5 +65,6 @@ textResultsLabel.grid(row=1, column=1, sticky=W)
 fileResultsLabel.grid(row=3, column=1, sticky=W)
 uploadFileButton.grid(row=2, column=1, sticky=W)
 textSubmitButton.grid(row=0, column=2)
+fileSubmitButton.grid(row=2, column=2)
 
 root.mainloop()
