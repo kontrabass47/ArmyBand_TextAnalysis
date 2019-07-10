@@ -24,12 +24,12 @@ class TextBlob(SentimentAnalyzer):
             analyzer = TextBlobAnalyzer(sentence)
             if analyzer.sentiment.polarity >= 0.001:
                 self.poscount += 1
-                counter += 1
                 obj.classifier = "positive"
+                counter += 1
             elif analyzer.sentiment.polarity <= -0.001:
                 self.negcount += 1
-                counter += 1
                 obj.classifier = "negative"
+                counter += 1
             else:
                 obj.classifier = "neutral"
             obj.sentence = sentence
