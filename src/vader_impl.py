@@ -16,12 +16,9 @@ class Vader(SentimentAnalyzer):
             if not vs['neg'] > 0.05:
                 self.poscount += 1
                 counter += 1
-
             if not vs['pos'] > 0.05:
                 self.negcount += 1
                 counter += 1
-
             self.polarity += vs['compound']
             self.sentimentList.append(vs)
-            counter += 1
         self.polarity = self.polarity / counter
