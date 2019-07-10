@@ -10,38 +10,32 @@ from keyword_extraction import KeywordExtractor
 class TextAnalysis:
     sentencelist = []
 
-    def __init__(self):
-        self.isFile = True
+    def read(self, fileName=None):
+        if fileName == None and (".xlsx" in sys.argv[1] or ".csv" in sys.argv[1]):
+            fileName = '../docs/' + sys.argv[1]
+        column = input("Please enter the name of the column with text to parse: ")
+ 
+        df_wp = pd.read_excel(fileName)
+        df_wp.dropna()
 
-    def read(self):
-        if (".xlsx" in sys.argv[1]) or (".csv" in sys.argv[1]):
-            self.isFile = True
+        sentencelist = df_wp[column].tolist()
 
-            file = '../docs/' + sys.argv[1]
-            column = input("Please enter the name of the column with text to parse: ")
+        vader = Vader()
+        vader.analyzeList(sentencelist)
+        print('Vader Positive: {} Vader Negative: {}', 
+                vader.poscount, vader.negcount)
+        print('Vader Polarity Average: ', vader.polarity)
 
-            df_wp = pd.read_excel(file)
-            df_wp.dropna()
+        textblob = TextBlob()
+        textblob.analyzeList(sentencelist)
+        print('TextBlob Positive: {} TextBlob Negative: {}', 
+                textblob.poscount, textblob.negcount)
+        print('TextBlob Polarity Average: ', textblob.polarity)
 
-            sentencelist = df_wp[column].tolist()
-
-            vader = Vader()
-            vader.analyzeList(sentencelist)
-            print('Vader Positive: {} Vader Negative: {}', vader.poscount, vader.negcount)
-            print('Vader Polarity Average: ', vader.polarity)
-
-            textblob = TextBlob()
-            textblob.analyzeList(sentencelist)
-            print('TextBlob Positive: {} TextBlob Negative: {}', textblob.poscount, textblob.negcount)
-            print('TextBlob Polarity Average: ', textblob.polarity)
-
-            naivebayes = NaiveBayes()
-            naivebayes.analyzeList(sentencelist)
-            print('NaiveBayes Positive: {} NaiveBayes Negative: {}', naivebayes.poscount, naivebayes.negcount)
-
-        else:
-            self.isFile = False
-
+        naivebayes = NaiveBayes()
+        naivebayes.analyzeList(sentencelist)
+        print('NaiveBayes Positive: {} NaiveBayes Negative: {}', 
+                naivebayes.poscount, naivebayes.negcount)
 
     def extractKeywords(self):
         extractor = KeywordExtractor()

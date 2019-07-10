@@ -4,6 +4,7 @@ from tkinter.filedialog import askopenfilename
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
+from text_analysis import TextAnalysis
 
 # Receives a file that has been uploaded. NOTHING is done until the submit
 # button has been clicked
@@ -17,7 +18,9 @@ def submitFile(event):
     if fileName == "Choose file":
         messagebox.showinfo("Error", "No file selected")
     else:
-        uploadResultsString.set(fileName)
+        analyzer = TextAnalysis()
+        analyzer.read(fileName)
+        uploadResultsString.set("check out the terminal for stuff")
 
 
 # Receives a string, analyzes it, and displays the results
