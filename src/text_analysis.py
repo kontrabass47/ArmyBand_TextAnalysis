@@ -39,6 +39,10 @@ class TextAnalysis:
             naivebayes.analyzeList(sentencelist)
             print('NaiveBayes Positive: {} NaiveBayes Negative: {}', naivebayes.poscount, naivebayes.negcount)
 
+            #print('Vader: ', vader.sentimentList[0])
+            #print('TextBlob: ', textblob.sentimentList[0])
+            #print('NaiveBayes: ', naivebayes.sentimentList[0])
+
         else:
             self.isFile = False
 
