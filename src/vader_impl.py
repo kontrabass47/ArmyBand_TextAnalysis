@@ -14,6 +14,7 @@ class Vader(SentimentAnalyzer):
         if (analyzer == None):
             analyzer = SentimentIntensityAnalyzer()
         vs = analyzer.polarity_scores(text)
+        '''
         if not vs['neg'] > 0.05:
             self.poscount += 1
             obj.classifier = "positive"
@@ -22,6 +23,14 @@ class Vader(SentimentAnalyzer):
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
+        '''
+        if vs['compound'] > 0.05:
+            self.poscount += 1
+            obj.classifier = "positive"
+        elif vs['compound'] < -0.05:
+            self.negcount += 1
+            obj.classifier = "negative"
+        else: obj.classifier = "neutral"
         obj.sentence = text
         obj.aggregate = vs['compound']
         return obj
