@@ -24,15 +24,15 @@ class Vader(SentimentAnalyzer):
         else:
             obj.classifier = "neutral"
         '''
-        #print("Vader Result")
-        #print(vs)
+
         if vs['compound'] > 0.05:
             self.poscount += 1
             obj.classifier = "positive"
         elif vs['compound'] < -0.05:
             self.negcount += 1
             obj.classifier = "negative"
-        else: obj.classifier = "neutral"
+        else:
+            obj.classifier = "neutral"
         obj.sentence = text
         obj.aggregate = vs['compound']
         return obj
