@@ -18,8 +18,8 @@ class NaiveBayes(SentimentAnalyzer):
         if analyzer == None:
             analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
         sentiment = analyzer(text).sentiment
-        print("Naive Bayes Result")
-        print(sentiment)
+        #print("Naive Bayes Result")
+        #print(sentiment)
         obj = SentimentObject()
         if sentiment.classification == 'pos' and sentiment.p_pos > 0.51:
             self.poscount += 1

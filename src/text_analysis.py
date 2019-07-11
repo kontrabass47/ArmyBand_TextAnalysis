@@ -18,22 +18,22 @@ class TextAnalysis:
         df_wp = pd.read_excel(fileName)
         df_wp.dropna()
 
-        sentencelist = df_wp[column].tolist()
+        self.sentencelist = df_wp[column].tolist()
 
         vader = Vader()
-        vader.analyzeList(sentencelist)
+        vader.analyzeList(self.sentencelist)
         print('Vader Positive: {} Vader Negative: {}'
                 .format(vader.poscount, vader.negcount))
         print('Vader Polarity Average: ', vader.polarity)
 
         textblob = TextBlob()
-        textblob.analyzeList(sentencelist)
+        textblob.analyzeList(self.sentencelist)
         print('TextBlob Positive: {} TextBlob Negative: {}'
                 .format(textblob.poscount, textblob.negcount))
         print('TextBlob Polarity Average: ', textblob.polarity)
 
         naivebayes = NaiveBayes()
-        naivebayes.analyzeList(sentencelist)
+        naivebayes.analyzeList(self.sentencelist)
         print('NaiveBayes Positive: {} NaiveBayes Negative: {}'
                 .format(naivebayes.poscount, naivebayes.negcount))
         #print('Vader: ', vader.sentimentList[0])
