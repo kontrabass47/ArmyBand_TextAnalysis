@@ -30,8 +30,8 @@ class TextBlob(SentimentAnalyzer):
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
-        print("TextBlob Result")
-        print(analyzer.sentiment)
+#        print("TextBlob Result")
+#        print(analyzer.sentiment)
         obj.sentence = text
         obj.aggregate = analyzer.sentiment.polarity
         return obj
