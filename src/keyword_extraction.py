@@ -28,4 +28,4 @@ class KeywordExtractor:
         text = " ".join(sentences)
         rake.extract_keywords_from_text(text)
         keywords = rake.get_ranked_phrases()
-        return keywords
+        return keywords[0:100]
