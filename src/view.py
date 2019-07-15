@@ -63,15 +63,21 @@ def submitText(event):
     vader = Vader()                             # sentiment analysis tools
     textblob = TextBlob()
     naivebayes = NaiveBayes()
+    textobj = TextAnalysis()
     textInput = textEntry.get()                 # user-inputted string
     
     vaderObj = vader.analyzeString(textInput)   # results from each of the 
     tbObj = textblob.analyzeString(textInput)   # tools in the form of
     nbObj = naivebayes.analyzeString(textInput) # SentimentObject objects
 
+    arr = [textInput]
+    textobj.normalize(arr)
+
     resultText = "Vader result: {}\n".format(vaderObj.classifier)
     resultText += "TextBlob result: {}\n".format(tbObj.classifier)
     resultText += "NaiveBayes result: {}\n".format(nbObj.classifier)
+    resultText += "Final result: {}\n".format(textobj.normalizedList[0].classifier)
+    resultText += "Confidence: {}%".format(round(textobj.normalizedList[0].confidence * 100, 2))
     textResultsString.set(resultText)
 
 # Initialize all widgets in GUI here

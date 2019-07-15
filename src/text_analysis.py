@@ -30,8 +30,6 @@ class TextAnalysis:
 
         self.normalize(self.sentencelist)
 
-       # self.avgConfidence = ((self.avgConfidence - (1/3)) / (1 - (1/3)))
-
         print("Total Positive: {} Total Negative: {} Total Neutral: {}".format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
 
@@ -93,21 +91,26 @@ class TextAnalysis:
 
             normobj = NormalizedObject()
 
+            # Calculate confidence level
+            if numpos == 2 or numneg == 2 or numneu == 2:
+                normobj.confidence = 1/3
+            elif numpos == 3 or numneg == 3 or numneu == 3:
+                normobj.confidence = 1
+            else:
+                normobj.confidence = 0
+
+            # Calculate classifier
             if numpos > numneg and numpos > numneu:
                 self.totalpos += 1
                 normobj.classifier = "positive"
-                normobj.confidence = numpos / 3
             elif numneg > numpos and numneg > numneu:
                 self.totalneg += 1
                 normobj.classifier = "negative"
-                normobj.confidence = numneg / 3
             elif numneu > numpos and numneu > numneg:
                 self.totalneu += 1
                 normobj.classifier = "neutral"
-                normobj.confidence = numneu / 3
             else:
                 normobj.classifier = "neutral"
-                normobj.confidence = 0
 
             self.normalizedList.append(normobj)
             self.avgConfidence += normobj.confidence
