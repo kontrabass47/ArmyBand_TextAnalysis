@@ -22,12 +22,11 @@ class TextAnalysis:
     def read(self, fileName=None):
         if fileName == None and (".xlsx" in sys.argv[1] or ".csv" in sys.argv[1]):
             fileName = '../docs/' + sys.argv[1]
-        column = input("Please enter the name of the column with text to parse: ")
  
         df_wp = pd.read_excel(fileName)
         df_wp.dropna()
 
-        self.sentencelist = df_wp[column].tolist()
+        self.sentencelist = df_wp["Text"].tolist()
 
         self.normalize(self.sentencelist)
 
@@ -116,9 +115,9 @@ class TextAnalysis:
         self.avgConfidence = self.avgConfidence / len(vader.sentimentList)
 
 
-    def extractKeywords(self):
+    def extractKeywords(self, keywords=None, stopwords=None):
         extractor = KeywordExtractor()
-        keywords = extractor.extractKeywords(self.sentencelist)
+        keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
         print(keywords)
 
     # def normalize(self):
