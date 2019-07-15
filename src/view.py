@@ -15,15 +15,18 @@ defaultColumnName = "Text"
 # button has been clicked
 def uploadFile(event):
     file = askopenfilename()
-    uploadFileButtonText.set(file)
+    if file:
+        uploadFileButtonText.set(file)
 
 def uploadKeywords(event):
     file = askopenfilename()
-    uploadKeywordsButtonText.set(file)
+    if file:
+        uploadKeywordsButtonText.set(file)
 
 def uploadStopwords(event):
     file = askopenfilename()
-    uploadStopwordsButtonText.set(file)
+    if file:
+        uploadStopwordsButtonText.set(file)
 
 # Submits the selected file to be analyzed, and then displays the results
 def submitFile(event):
