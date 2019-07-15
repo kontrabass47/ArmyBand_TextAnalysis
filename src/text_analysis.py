@@ -30,31 +30,9 @@ class TextAnalysis:
 
         self.normalize(self.sentencelist)
 
-        print("Total Positive: {} Total Negative: {} Total Neutral: {}".format(self.totalpos, self.totalneg, self.totalneu))
+        print("Total Positive: {} Total Negative: {} Total Neutral: {}"
+                .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
-
-        ''' Code Used for 
-        
-        vader = Vader()
-        vader.analyzeList(self.sentencelist)
-        print('Vader Positive: {} Vader Negative: {}'
-                .format(vader.poscount, vader.negcount))
-        print('Vader Polarity Average: ', vader.polarity)
-
-        textblob = TextBlob()
-        textblob.analyzeList(self.sentencelist)
-        print('TextBlob Positive: {} TextBlob Negative: {}'
-                .format(textblob.poscount, textblob.negcount))
-        print('TextBlob Polarity Average: ', textblob.polarity)
-
-        naivebayes = NaiveBayes()
-        naivebayes.analyzeList(self.sentencelist)
-        print('NaiveBayes Positive: {} NaiveBayes Negative: {}'
-                .format(naivebayes.poscount, naivebayes.negcount))
-        #print('Vader: ', vader.sentimentList[0])
-        #print('TextBlob: ', textblob.sentimentList[0])
-        #print('NaiveBayes: ', naivebayes.sentimentList[0])
-        '''
 
     def normalize(self, sentencelist):
         vader = Vader()
@@ -120,10 +98,22 @@ class TextAnalysis:
 
     def extractKeywords(self, keywords=None, stopwords=None):
         extractor = KeywordExtractor()
-        keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
-        print(keywords)
-
-    # def normalize(self):
+        extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
+        print(extracted_keywords)
+        joined_keywords = " ".join(extracted_keywords)
+        single_words = joined_keywords.split()
+       
+        if keywords != None:
+            keyword_dict = {}
+            # add all user-defined keywords to a dictionary, setting all counts to 0
+            for keyword in keywords:
+                keyword_dict[keyword.lower()] = 0
+            # go through the extracted keywords, counting instances of each
+            # user-defined keyword as we go
+            for word in single_words:
+                if word in keyword_dict.keys():
+                    keyword_dict[word] += 1
+            print(keyword_dict)
 
 
 if __name__ == "__main__":
