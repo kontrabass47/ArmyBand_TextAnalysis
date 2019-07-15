@@ -1,3 +1,4 @@
+import pandas as pd
 from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry
 from tkinter import LEFT, N, W, filedialog, messagebox
 from tkinter.filedialog import askopenfilename
@@ -5,6 +6,10 @@ from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
 from text_analysis import TextAnalysis
+
+fileUploadDefaultText = "Choose file"
+optionalUploadDefaultText = "Choose a file (optional)"
+defaultColumnName = "Text"
 
 # Receives a file that has been uploaded. NOTHING is done until the submit
 # button has been clicked
@@ -22,19 +27,33 @@ def uploadStopwords(event):
 
 # Submits the selected file to be analyzed, and then displays the results
 def submitFile(event):
+    # file paths of provided file, and optionally keywords and stopwords
     fileName = uploadFileButtonText.get()
-    if fileName == "Choose file":
+    keywordsName = uploadKeywordsButtonText.get()
+    stopwordsName = uploadStopwordsButtonText.get()
+
+    # prompt an alert if no file was selected, return
+    if fileName == fileUploadDefaultText:
         messagebox.showinfo("Error", "No file selected")
-    else:
-        analyzer = TextAnalysis()
-        analyzer.read(fileName)
-        uploadResultsString.set("check out the terminal for stuff")
+        return
+    
+    # create lists of stopwords and keywords. lists are empty if not provided
+    keywords = None
+    stopwords = None
+    if keywordsName != optionalUploadDefaultText:
+        keywordFile = pd.read_excel(keywordsName)
+        keywordFile.dropna()
+        keywords = keywordFile[defaultColumnName].tolist()
+    if stopwordsName != optionalUploadDefaultText:
+        stopwordsFile = pd.read_excel(stopwordsName)
+        stopwordsFile.dropna()
+        stopwords = stopwordsFile[defaultColumnName].tolist()
 
-def submitKeywords(event):
-    fileName = uploadKeywordsButtonText.get()
-
-def submitStopwords(event):
-    fileName = uploadStopwordsButtonText.get()
+    # analyze file and return results
+    analyzer = TextAnalysis()
+    analyzer.read(fileName)
+    analyzer.extractKeywords(keywords, stopwords)
+    uploadResultsString.set("check out the terminal for stuff")
 
 # Receives a string, analyzes it, and displays the results
 def submitText(event):
@@ -69,7 +88,7 @@ textResultsLabel = Label(root, anchor=N, textvariable=textResultsString, height=
 # Row 3 widgets: File Label, File Upload, File Submit
 uploadFileLabel = Label(root, text="Upload File")
 uploadFileButtonText = StringVar()
-uploadFileButtonText.set("Choose file")
+uploadFileButtonText.set(fileUploadDefaultText)
 uploadFileButton = Button(root, textvariable=uploadFileButtonText)
 uploadFileButton.bind("<Button-1>", uploadFile)
 fileSubmitButton = Button(root, text="Submit")
@@ -78,20 +97,16 @@ fileSubmitButton.bind("<Button-1>", submitFile)
 # Row 4 widgets: Keywords Label, Keywords Upload, Keywords Submit
 uploadKeywordsLabel = Label(root, text="Upload Keywords")
 uploadKeywordsButtonText = StringVar()
-uploadKeywordsButtonText.set("Choose file")
+uploadKeywordsButtonText.set(optionalUploadDefaultText)
 uploadKeywordsButton = Button(root, textvariable=uploadKeywordsButtonText)
 uploadKeywordsButton.bind("<Button-1>", uploadKeywords)
-keywordsSubmitButton = Button(root, text="Submit")
-keywordsSubmitButton.bind("<Button-1>", submitKeywords)
 
 # Row 5 widgets: Stopwords Label, Stopwards Upload, Stopwards Submit
 uploadStopwordsLabel = Label(root, text="Upload Stopwords")
 uploadStopwordsButtonText = StringVar()
-uploadStopwordsButtonText.set("Choose file")
+uploadStopwordsButtonText.set(optionalUploadDefaultText)
 uploadStopwordsButton = Button(root, textvariable=uploadStopwordsButtonText)
 uploadStopwordsButton.bind("<Button-1>", uploadStopwords)
-stopwordsSubmitButton = Button(root, text="Submit")
-stopwordsSubmitButton.bind("<Button-1>", submitStopwords)
 
 # Row 6 widgets: File Analyzer Results Label
 uploadResultsString = StringVar()
@@ -109,15 +124,13 @@ textResultsLabel.grid(row=1, column=1, sticky=W)
 
 uploadFileLabel.grid(row=2, column=0, sticky=W)
 uploadFileButton.grid(row=2, column=1, sticky=W)
-fileSubmitButton.grid(row=2, column=2)
 
 uploadKeywordsLabel.grid(row=3, column=0, sticky=W)
 uploadKeywordsButton.grid(row=3, column=1, sticky=W)
-keywordsSubmitButton.grid(row=3, column=2)
 
 uploadStopwordsLabel.grid(row=4, column=0, sticky=W)
 uploadStopwordsButton.grid(row=4, column=1, sticky=W)
-stopwordsSubmitButton.grid(row=4, column=2)
+fileSubmitButton.grid(row=4, column=2)
 
 fileResultsLabel.grid(row=5, column=1, sticky=W)
 
