@@ -21,11 +21,13 @@ class TextAnalysis:
         self.normalizedList = [] # contains list of normalized objects
         self.sentencelist = [] # contains list of sentences passed to program
 
-    def read(self, fileName=None):
-        if fileName == None and (".xlsx" in sys.argv[1] or ".csv" in sys.argv[1]):
-            fileName = '../docs/' + sys.argv[1]
- 
-        df_wp = pd.read_excel(fileName)
+    def read(self, fileName):
+        df_wp = None
+        if ".xlsx" in fileName:
+            df_wp = pd.read_excel(fileName)
+        if ".csv" in fileName:
+            df_wp = pd.read_csv(fileName)
+
         df_wp.dropna()
 
         self.sentencelist = df_wp["Text"].tolist()
