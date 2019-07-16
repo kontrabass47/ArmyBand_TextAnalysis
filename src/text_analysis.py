@@ -38,6 +38,32 @@ class TextAnalysis:
                 .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
 
+    def countSentimentHelper(vader, textblob, naive):
+        numpos = 0
+        numneg = 0
+        numneu = 0
+        if vader.classifier == "positive":
+           numpos += 1
+        if textblob.classifier == "positive":
+            numpos += 1
+        if naive.classifier == "positive":
+            numpos += 1
+        if vader.classifier == "negative":
+            numneg += 1
+        if textblob.classifier == "negative":
+            numneg += 1
+        if naivebayes.classifier == "negative":
+            numneg += 1
+        if vader.classifier == "neutral":
+            numneu += 1
+        if textblob.classifier == "neutral":
+            numneu += 1
+        if naivebayes.classifier == "neutral":
+            numneu += 1
+        sentiments = {"pos": numpos, "neg": numneg, "neu", numneu}
+        return sentiments
+
+
     def normalize(self, sentencelist):
         vader = Vader()
         textblob = TextBlob()
@@ -48,56 +74,72 @@ class TextAnalysis:
         naivebayes.analyzeList(sentencelist)
 
         for i in range(0, len(vader.sentimentList)):
-            numpos = 0
-            numneg = 0
-            numneu = 0
-
-            if vader.sentimentList[i].classifier == "positive":
-                numpos += 1
-            if textblob.sentimentList[i].classifier == "positive":
-                numpos += 1
-            if naivebayes.sentimentList[i].classifier == "positive":
-                numpos += 1
-            if vader.sentimentList[i].classifier == "negative":
-                numneg += 1
-            if textblob.sentimentList[i].classifier == "negative":
-                numneg += 1
-            if naivebayes.sentimentList[i].classifier == "negative":
-                numneg += 1
-            if vader.sentimentList[i].classifier == "neutral":
-                numneu += 1
-            if textblob.sentimentList[i].classifier == "neutral":
-                numneu += 1
-            if naivebayes.sentimentList[i].classifier == "neutral":
-                numneu += 1
-
+            nums = countSentimentHelper(
+                    vader.sentimentList[i],
+                    textblob.sentimentList[i],
+                    naivebayes.sentimentList[i])
             normobj = NormalizedObject()
 
             # Calculate confidence level
-            if numpos == 2 or numneg == 2 or numneu == 2:
+            if nums['pos'] == 2 or nums['neg'] == 2 or nums['neu'] == 2:
                 normobj.confidence = 1/3
-            elif numpos == 3 or numneg == 3 or numneu == 3:
+            elif nums['pos'] == 3 or nums['neg'] == 3 or nums['neu'] == 3:
                 normobj.confidence = 1
             else:
                 normobj.confidence = 0
 
             # Calculate classifier
-            if numpos > numneg and numpos > numneu:
+            if nums['pos'] > nums['neg'] and nums['pos'] > nums['neu']:
                 self.totalpos += 1
                 normobj.classifier = "positive"
-            elif numneg > numpos and numneg > numneu:
+            elif nums['neg'] > nums['pos'] and nums['neg'] > nums['neu']:
                 self.totalneg += 1
                 normobj.classifier = "negative"
-            elif numneu > numpos and numneu > numneg:
-                self.totalneu += 1
-                normobj.classifier = "neutral"
             else:
+                self.totalneu += 1
                 normobj.classifier = "neutral"
 
             self.normalizedList.append(normobj)
             self.avgConfidence += normobj.confidence
 
         self.avgConfidence = self.avgConfidence / len(vader.sentimentList)
+
+    def getResultObj(self, word, sentencelist):
+        vader = Vader()
+        textblob = TextBlob()
+        naivebayes = NaiveBayes()
+
+        vader.analyzeList(sentencelist)
+        textblob.analyzeList(sentencelist)
+        naivebayes.analyzeList(sentencelist)
+
+        numpos = 0
+        numneg = 0
+        numneu = 0
+        total_confidence = 0;
+        for i in range(0, len(vader.sentimentList)):
+            nums = countSentimentHelper(
+                    vader.sentimentList[i],
+                    textblob.sentimentList[i],
+                    naivebayes.sentimentList[i])
+            numpos += nums['pos']
+            numneg += nums['neg']
+            numneu += nums['neu']
+
+            confidence = 0
+            # Calculate confidence level
+            if nums['pos'] == 2 or nums['neg'] == 2 or nums['neu'] == 2:
+                confidence = 1/3
+            elif nums['pos'] == 3 or nums['neg'] == 3 or nums['neu'] == 3:
+                confidence = 1
+            else:
+                confidence = 0
+
+            total_confidence += confidence
+        percentPositive = numpos / (numpos + numneg + numneu)
+        avg_confidence = total_confidence / len(vader.sentimentList)
+        result = Result(word, sentencelist, percentPositive, avg_confidence)
+        return result
 
     # given pre-stemmed keywords:
     #   - loop through all sentences in data
@@ -122,17 +164,11 @@ class TextAnalysis:
         return dictionary
 
     def getResultsFromKeywordDictionary(self, dictionary):
+        results = []
         for keyword in dictionary.keys():
-            # TODO:
-            g = 1
-            # analyze sentiment of associated list of sentences
-            # build Result object with:
-            #   - keyword
-            #   - sentences
-            #   - sentiment
-            # HOW TO DO: refactor read to be more modular. take in sentences, spit out
-            #            sentiment of those sentences
-        return None
+            result = getResultObj(keyword, dictionary[keyword])
+            results.append(result)
+        return results
 
     # extracts keywords from the given list of sentences
     #   - if provided, custom stopwords will be used in extracting the keywords
