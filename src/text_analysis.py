@@ -2,6 +2,8 @@
 
 import sys
 import pandas as pd
+import xlsxwriter as excel
+from datetime import datetime
 from vader_impl import Vader
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
@@ -169,10 +171,40 @@ class TextAnalysis:
         for keyword in dictionary.keys():
             if dictionary[keyword]:
                 result = self.getResultObj(keyword, dictionary[keyword])
-                print("keyword is {}".format(keyword))
-                print(result)
                 results.append(result)
         return results
+
+    # creates the output file given a list of results. output is in the form of
+    # an excel file
+    def createOutputFile(self, results):
+        words = []       # list of keywords
+        sentences = []   # list of lists of sentences
+        sentiments = []  # list of sentiments, represented as % positive
+        confidences = [] # list of confidences, represented as % confidence
+        for result in results:
+            words.append(result.word)
+            sentences.append(result.sentences)
+            sentiments.append(result.sentiment)
+            confidences.append(result.confidence)
+        output = excel.Workbook('out.xlsx')
+        sheet = output.add_worksheet()
+        sheet.set_column(0, 0, 20)
+        sheet.write(0, 0, 'Word/% Positive/% Confidence')
+        sheet.write(0, 1, 'Sentences')
+        rowCounter = 1
+        for i in range(len(results)):
+            sentiment_percent = '%.3f'%(results[i].sentiment * 100)
+            confidence_percent = '%.3f'%(results[i].confidence * 100)
+            sheet.write(rowCounter, 0, results[i].word)
+            sheet.write(rowCounter + 1, 0, '{}% positive'.format(sentiment_percent))
+            sheet.write(rowCounter + 2, 0, '{}% confident'.format(confidence_percent))
+            for sentence in sentences[i]:
+                sheet.write(rowCounter, 1, sentence)
+                rowCounter += 1
+            if len(sentences[i]) < 3:
+                rowCounter += (3 - len(sentences[i]))
+            rowCounter += 1
+        output.close()
 
     # extracts keywords from the given list of sentences
     #   - if provided, custom stopwords will be used in extracting the keywords
@@ -181,6 +213,7 @@ class TextAnalysis:
     # note that there is NO guarantee that each sentence will be displayed only once.
     # sentences with more than one keyword can appear under multiple keywords
     def extractKeywords(self, keywords=None, stopwords=None):
+        print("extracting keywords at {}".format(datetime.now().time()))
         extractor = KeywordExtractor()
         extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
         joined_keywords = " ".join(extracted_keywords)
@@ -190,6 +223,7 @@ class TextAnalysis:
         if keywords == None:
             return
         
+        print("stemming keywords at {}".format(datetime.now().time()))
         # stemming all keywords for easier comparison
         stemmer = PorterStemmer()
         stemmed_keywords = []
@@ -200,18 +234,13 @@ class TextAnalysis:
         # dictionary with keywords for keys, mapped to lists of sentences with
         # that keyword
         keyword_dict = {}
+        print("getting sentences associated w/ keywords at {}".format(datetime.now().time()))
         dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
-        print("======================= KEYWORD TO SENTENCES DICT ===========================")
+        print("building printable results at {}".format(datetime.now().time()))
         results = self.getResultsFromKeywordDictionary(dictionary) 
-
-        # stemming all words in the extracted keywords for easier comparison
-        stemmed_words = []
-        for word in single_words:
-            stemmed_word = stemmer.stem(word)
-            stemmed_words.append(stemmed_word)
-
-        print("======================= KEYWORD COUNTER DICT  ===========================")
-        print(keyword_dict)
+        print("creating output file at {}".format(datetime.now().time()))
+        self.createOutputFile(results)
+        print("done extracting keywords at {}".format(datetime.now().time()))
 
 
 if __name__ == "__main__":
