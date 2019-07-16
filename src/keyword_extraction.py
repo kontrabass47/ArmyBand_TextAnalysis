@@ -24,9 +24,8 @@ class KeywordExtractor:
         rake = Rake(
                 ranking_metric=Metric.WORD_FREQUENCY, 
                 stopwords=custom_stopwords,
-                max_length=5)
+                max_length=7)
         text = " ".join(sentences)
         rake.extract_keywords_from_text(text)
         keywords = rake.get_ranked_phrases()
-        print("keywords successfully extracted!")
-        return keywords[0:30]
+        return keywords[0:100]

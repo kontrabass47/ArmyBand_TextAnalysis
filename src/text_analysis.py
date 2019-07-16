@@ -7,7 +7,9 @@ from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from keyword_extraction import KeywordExtractor
 from sentiment_analyzer import NormalizedObject
-
+from result import Result
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
 
 class TextAnalysis:
 
@@ -30,31 +32,9 @@ class TextAnalysis:
 
         self.normalize(self.sentencelist)
 
-        print("Total Positive: {} Total Negative: {} Total Neutral: {}".format(self.totalpos, self.totalneg, self.totalneu))
+        print("Total Positive: {} Total Negative: {} Total Neutral: {}"
+                .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
-
-        ''' Code Used for 
-        
-        vader = Vader()
-        vader.analyzeList(self.sentencelist)
-        print('Vader Positive: {} Vader Negative: {}'
-                .format(vader.poscount, vader.negcount))
-        print('Vader Polarity Average: ', vader.polarity)
-
-        textblob = TextBlob()
-        textblob.analyzeList(self.sentencelist)
-        print('TextBlob Positive: {} TextBlob Negative: {}'
-                .format(textblob.poscount, textblob.negcount))
-        print('TextBlob Polarity Average: ', textblob.polarity)
-
-        naivebayes = NaiveBayes()
-        naivebayes.analyzeList(self.sentencelist)
-        print('NaiveBayes Positive: {} NaiveBayes Negative: {}'
-                .format(naivebayes.poscount, naivebayes.negcount))
-        #print('Vader: ', vader.sentimentList[0])
-        #print('TextBlob: ', textblob.sentimentList[0])
-        #print('NaiveBayes: ', naivebayes.sentimentList[0])
-        '''
 
     def normalize(self, sentencelist):
         vader = Vader()
@@ -117,13 +97,87 @@ class TextAnalysis:
 
         self.avgConfidence = self.avgConfidence / len(vader.sentimentList)
 
+    # given pre-stemmed keywords:
+    #   - loop through all sentences in data
+    #   - add sentence to dictionary, where each keyword is mapped to list of sentences
+    #     with that keyword
+    #   - return that dictionary
+    def getSentencesWithKeywords(self, stemmed_keywords):
+        stemmer = PorterStemmer()
+        dictionary = {}
+        for keyword in stemmed_keywords:                     # add all keywords to dict
+            dictionary[keyword] = []
+        for sentence in self.sentencelist:
+            for keyword in stemmed_keywords:
+                # if this keyword is in this sentence, add it to the list of sentences
+                # associated with this keyword
+                words = word_tokenize(sentence)
+                stemmed_words = []                           # tokenize this sentence
+                for word in words:                           # and stem all the words
+                    stemmed_words.append(stemmer.stem(word)) # for easy comparison
+                if keyword in stemmed_words:
+                    dictionary[keyword].append(sentence)
+        return dictionary
 
+    def getResultsFromKeywordDictionary(self, dictionary):
+        for keyword in dictionary.keys():
+            # TODO:
+            # analyze sentiment of associated list of sentences
+            # build Result object with:
+            #   - keyword
+            #   - sentences
+            #   - sentiment
+            # HOW TO DO: refactor read to be more modular. take in sentences, spit out
+            #            sentiment of those sentences
+        return None
+
+    # extracts keywords from the given list of sentences
+    #   - if provided, custom stopwords will be used in extracting the keywords
+    #   - if custom keywords are provided, this will return the prominence and 
+    #     sentiment of sentences related to that keyword
+    # note that there is NO guarantee that each sentence will be displayed only once.
+    # sentences with more than one keyword can appear under multiple keywords
     def extractKeywords(self, keywords=None, stopwords=None):
         extractor = KeywordExtractor()
-        keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
-        print(keywords)
+        extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
+        print(extracted_keywords)
+        joined_keywords = " ".join(extracted_keywords)
+        single_words = word_tokenize(joined_keywords)
 
-    # def normalize(self):
+        # if there are no keywords to look for, our work is done
+        if keywords == None:
+            return
+        
+        # stemming all keywords for easier comparison
+        stemmer = PorterStemmer()
+        stemmed_keywords = []
+        for keyword in keywords:
+            stemmed_word = stemmer.stem(keyword)
+            stemmed_keywords.append(stemmed_word)
+
+        # dictionary with keywords for keys, mapped to lists of sentences with
+        # that keyword
+        dictionary = self.getSentencesWithKeywords(stemmed_keywords)
+        results = self.getResultsFromKeywordDictionary(dictionary) 
+        print(results)
+
+        # stemming all words in the extracted keywords for easier comparison
+        stemmed_words = []
+        for word in single_words:
+            stemmed_word = stemmer.stem(word)
+            stemmed_words.append(stemmed_word)
+
+        keyword_dict = {}
+        # add all user-defined keywords to a dictionary, setting all counts to 0
+        for keyword in stemmed_keywords:
+            keyword_dict[keyword.lower()] = 0
+        # go through the extracted keywords, counting instances of each
+        # user-defined keyword as we go
+        for word in single_words:
+            stemmed_word = stemmer.stem(word)
+            if stemmed_word in keyword_dict.keys():
+                keyword_dict[stemmed_word] += 1
+        print(keyword_dict)
 
 
 if __name__ == "__main__":
