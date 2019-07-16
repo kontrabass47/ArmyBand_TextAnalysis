@@ -23,15 +23,11 @@ class TextBlob(SentimentAnalyzer):
         analyzer = TextBlobAnalyzer(text)
         obj = SentimentObject()
         if analyzer.sentiment.polarity >= 0.001:
-            self.poscount += 1
             obj.classifier = "positive"
         elif analyzer.sentiment.polarity <= -0.001:
-            self.negcount += 1
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
-#        print("TextBlob Result")
-#        print(analyzer.sentiment)
         obj.sentence = text
         obj.aggregate = analyzer.sentiment.polarity
         return obj
@@ -40,6 +36,9 @@ class TextBlob(SentimentAnalyzer):
     # analyzes the list of sentences passed in and populates the object's list
     # sentiment objects
     def analyzeList(self, list):
+        # reset sentiment list and polarity before each iteration
+        self.sentimentList = []
+        self.polarity = 0
         counter = 0
         for sentence in list:
             obj = self.analyzeString(sentence)

@@ -15,23 +15,9 @@ class Vader(SentimentAnalyzer):
             analyzer = SentimentIntensityAnalyzer()
         vs = analyzer.polarity_scores(text)
 
-        '''
-        if not vs['neg'] > 0.05:
-            self.poscount += 1
-            obj.classifier = "positive"
-        elif not vs['pos'] > 0.05:
-            self.negcount += 1
-            obj.classifier = "negative"
-        else:
-            obj.classifier = "neutral"
-        
-        '''
-
         if vs['compound'] > 0.05:
-            self.poscount += 1
             obj.classifier = "positive"
         elif vs['compound'] < -0.05:
-            self.negcount += 1
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
@@ -42,6 +28,9 @@ class Vader(SentimentAnalyzer):
     # Analyzes a list of string for sentiment, creating SentimentObjects relating
     # sentiment to each string
     def analyzeList(self, list):
+        # reset its sentiment list and polarity every time this is called
+        self.sentimentList = []
+        self.polarity = 0
         counter = 0
         analyzer = SentimentIntensityAnalyzer()
         for sentence in list:
