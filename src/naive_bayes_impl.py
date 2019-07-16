@@ -18,14 +18,10 @@ class NaiveBayes(SentimentAnalyzer):
         if analyzer == None:
             analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
         sentiment = analyzer(text).sentiment
-        #print("Naive Bayes Result")
-        #print(sentiment)
         obj = SentimentObject()
         if sentiment.classification == 'pos' and sentiment.p_pos > 0.51:
-            self.poscount += 1
             obj.classifier = "positive"
         elif sentiment.classification == 'neg' and sentiment.p_neg > 0.51:
-            self.negcount += 1
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
@@ -36,6 +32,8 @@ class NaiveBayes(SentimentAnalyzer):
 
     # Analyzes a list of strings, using the analyzeString helper method.
     def analyzeList(self, list):
+        # reset sentiment list before each iteration
+        self.sentimentList = []
         tb = Blobber(analyzer=NaiveBayesAnalyzer())
         for sentence in list:
             obj = self.analyzeString(sentence, tb)

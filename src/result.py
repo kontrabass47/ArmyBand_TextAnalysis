@@ -6,3 +6,7 @@ class Result:
         self.sentences = sentences
         self.sentiment = sentiment
         self.confidence = confidence
+
+    def __str__(self):
+        return "Keyword: {}\n{}\nPercent Positive: {}\nConfidence: {}".format(
+                self.word, self.sentences, self.sentiment, self.confidence)

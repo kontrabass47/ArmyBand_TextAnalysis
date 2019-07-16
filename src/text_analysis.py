@@ -20,6 +20,9 @@ class TextAnalysis:
         self.avgConfidence = 0
         self.normalizedList = [] # contains list of normalized objects
         self.sentencelist = [] # contains list of sentences passed to program
+        self.vader = Vader()
+        self.textblob = TextBlob()
+        self.naivebayes = NaiveBayes()
 
     def read(self, fileName):
         df_wp = None
@@ -38,7 +41,7 @@ class TextAnalysis:
                 .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
 
-    def countSentimentHelper(vader, textblob, naive):
+    def countSentimentHelper(self, vader, textblob, naivebayes):
         numpos = 0
         numneg = 0
         numneu = 0
@@ -46,7 +49,7 @@ class TextAnalysis:
            numpos += 1
         if textblob.classifier == "positive":
             numpos += 1
-        if naive.classifier == "positive":
+        if naivebayes.classifier == "positive":
             numpos += 1
         if vader.classifier == "negative":
             numneg += 1
@@ -60,24 +63,20 @@ class TextAnalysis:
             numneu += 1
         if naivebayes.classifier == "neutral":
             numneu += 1
-        sentiments = {"pos": numpos, "neg": numneg, "neu", numneu}
+        sentiments = {"pos" : numpos, "neg" : numneg, "neu" : numneu}
         return sentiments
 
 
     def normalize(self, sentencelist):
-        vader = Vader()
-        textblob = TextBlob()
-        naivebayes = NaiveBayes()
+        self.vader.analyzeList(sentencelist)
+        self.textblob.analyzeList(sentencelist)
+        self.naivebayes.analyzeList(sentencelist)
 
-        vader.analyzeList(sentencelist)
-        textblob.analyzeList(sentencelist)
-        naivebayes.analyzeList(sentencelist)
-
-        for i in range(0, len(vader.sentimentList)):
-            nums = countSentimentHelper(
-                    vader.sentimentList[i],
-                    textblob.sentimentList[i],
-                    naivebayes.sentimentList[i])
+        for i in range(0, len(self.vader.sentimentList)):
+            nums = self.countSentimentHelper(
+                    self.vader.sentimentList[i],
+                    self.textblob.sentimentList[i],
+                    self.naivebayes.sentimentList[i])
             normobj = NormalizedObject()
 
             # Calculate confidence level
@@ -102,26 +101,24 @@ class TextAnalysis:
             self.normalizedList.append(normobj)
             self.avgConfidence += normobj.confidence
 
-        self.avgConfidence = self.avgConfidence / len(vader.sentimentList)
+        self.avgConfidence = self.avgConfidence / len(self.vader.sentimentList)
 
+    # Creates and returns a Result object.
     def getResultObj(self, word, sentencelist):
-        vader = Vader()
-        textblob = TextBlob()
-        naivebayes = NaiveBayes()
 
-        vader.analyzeList(sentencelist)
-        textblob.analyzeList(sentencelist)
-        naivebayes.analyzeList(sentencelist)
+        self.vader.analyzeList(sentencelist)
+        self.textblob.analyzeList(sentencelist)
+        self.naivebayes.analyzeList(sentencelist)
 
         numpos = 0
         numneg = 0
         numneu = 0
         total_confidence = 0;
-        for i in range(0, len(vader.sentimentList)):
-            nums = countSentimentHelper(
-                    vader.sentimentList[i],
-                    textblob.sentimentList[i],
-                    naivebayes.sentimentList[i])
+        for i in range(0, len(self.vader.sentimentList)):
+            nums = self.countSentimentHelper(
+                    self.vader.sentimentList[i],
+                    self.textblob.sentimentList[i],
+                    self.naivebayes.sentimentList[i])
             numpos += nums['pos']
             numneg += nums['neg']
             numneu += nums['neu']
@@ -137,7 +134,7 @@ class TextAnalysis:
 
             total_confidence += confidence
         percentPositive = numpos / (numpos + numneg + numneu)
-        avg_confidence = total_confidence / len(vader.sentimentList)
+        avg_confidence = total_confidence / len(self.vader.sentimentList)
         result = Result(word, sentencelist, percentPositive, avg_confidence)
         return result
 
@@ -166,8 +163,11 @@ class TextAnalysis:
     def getResultsFromKeywordDictionary(self, dictionary):
         results = []
         for keyword in dictionary.keys():
-            result = getResultObj(keyword, dictionary[keyword])
-            results.append(result)
+            if dictionary[keyword]:
+                result = self.getResultObj(keyword, dictionary[keyword])
+                print("keyword is {}".format(keyword))
+                print(result)
+                results.append(result)
         return results
 
     # extracts keywords from the given list of sentences
@@ -179,7 +179,6 @@ class TextAnalysis:
     def extractKeywords(self, keywords=None, stopwords=None):
         extractor = KeywordExtractor()
         extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
-        print(extracted_keywords)
         joined_keywords = " ".join(extracted_keywords)
         single_words = word_tokenize(joined_keywords)
 
@@ -197,8 +196,8 @@ class TextAnalysis:
         # dictionary with keywords for keys, mapped to lists of sentences with
         # that keyword
         dictionary = self.getSentencesWithKeywords(stemmed_keywords)
+        print("======================= KEYWORD TO SENTENCES DICT ===========================")
         results = self.getResultsFromKeywordDictionary(dictionary) 
-        print(results)
 
         # stemming all words in the extracted keywords for easier comparison
         stemmed_words = []
@@ -216,6 +215,7 @@ class TextAnalysis:
             stemmed_word = stemmer.stem(word)
             if stemmed_word in keyword_dict.keys():
                 keyword_dict[stemmed_word] += 1
+        print("======================= KEYWORD COUNTER DICT  ===========================")
         print(keyword_dict)
 
 
