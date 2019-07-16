@@ -122,6 +122,7 @@ class TextAnalysis:
     def getResultsFromKeywordDictionary(self, dictionary):
         for keyword in dictionary.keys():
             # TODO:
+            g = 1
             # analyze sentiment of associated list of sentences
             # build Result object with:
             #   - keyword

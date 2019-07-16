@@ -1,4 +1,6 @@
 import pandas as pd
+import tkinter as tk
+from time import sleep
 from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry
 from tkinter import LEFT, N, W, filedialog, messagebox
 from tkinter.filedialog import askopenfilename
@@ -10,7 +12,6 @@ from text_analysis import TextAnalysis
 fileUploadDefaultText = "Choose file"
 optionalUploadDefaultText = "Choose a file (optional)"
 defaultColumnName = "Text"
-
 # Receives a file that has been uploaded. NOTHING is done until the submit
 # button has been clicked
 def uploadFile(event):
@@ -28,8 +29,17 @@ def uploadStopwords(event):
     if file:
         uploadStopwordsButtonText.set(file)
 
+def submitFileWait(event):
+    global win  # variable is global so it can be accessed in submitFile()
+    win = tk.Tk()
+    win.wm_title("Analyzer: ")
+
+    label = tk.Label(win, text="Analyzing Data, Please Wait...")
+    label.pack()
+    win.after(200, submitFile)
+
 # Submits the selected file to be analyzed, and then displays the results
-def submitFile(event):
+def submitFile():
     # file paths of provided file, and optionally keywords and stopwords
     fileName = uploadFileButtonText.get()
     keywordsName = uploadKeywordsButtonText.get()
@@ -39,7 +49,7 @@ def submitFile(event):
     if fileName == fileUploadDefaultText:
         messagebox.showinfo("Error", "No file selected")
         return
-    
+
     # create lists of stopwords and keywords. lists are empty if not provided
     keywords = None
     stopwords = None
@@ -56,7 +66,13 @@ def submitFile(event):
     analyzer = TextAnalysis()
     analyzer.read(fileName)
     analyzer.extractKeywords(keywords, stopwords)
-    uploadResultsString.set("check out the terminal for stuff")
+
+    resultText = "Total Positive: {}\n".format(analyzer.totalpos)
+    resultText += "Total Negative: {}\n".format(analyzer.totalneg)
+    resultText += "Total Neutral: {}\n".format(analyzer.totalneu)
+    resultText += "Total Confidence: {}%".format(round(analyzer.avgConfidence * 100, 2))
+    uploadResultsString.set(resultText)
+    win.destroy()
 
 # Receives a string, analyzes it, and displays the results
 def submitText(event):
@@ -65,13 +81,13 @@ def submitText(event):
     naivebayes = NaiveBayes()
     textobj = TextAnalysis()
     textInput = textEntry.get()                 # user-inputted string
-    
-    vaderObj = vader.analyzeString(textInput)   # results from each of the 
+
+    vaderObj = vader.analyzeString(textInput)   # results from each of the
     tbObj = textblob.analyzeString(textInput)   # tools in the form of
     nbObj = naivebayes.analyzeString(textInput) # SentimentObject objects
 
     arr = [textInput]
-    textobj.normalize(arr)
+    print("ERROR TESTING!!! textEntry array: ", arr)
 
     resultText = "Vader result: {}\n".format(vaderObj.classifier)
     resultText += "TextBlob result: {}\n".format(tbObj.classifier)
@@ -101,7 +117,7 @@ uploadFileButtonText.set(fileUploadDefaultText)
 uploadFileButton = Button(root, textvariable=uploadFileButtonText)
 uploadFileButton.bind("<Button-1>", uploadFile)
 fileSubmitButton = Button(root, text="Submit")
-fileSubmitButton.bind("<Button-1>", submitFile)
+fileSubmitButton.bind("<Button-1>", submitFileWait)
 
 # Row 4 widgets: Keywords Label, Keywords Upload, Keywords Submit
 uploadKeywordsLabel = Label(root, text="Upload Keywords")
