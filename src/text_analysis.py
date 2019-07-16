@@ -38,6 +38,9 @@ class TextAnalysis:
                 .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
 
+    def output(self):
+        print("test")
+
     def normalize(self, sentencelist):
         vader = Vader()
         textblob = TextBlob()
