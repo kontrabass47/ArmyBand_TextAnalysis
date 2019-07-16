@@ -2,6 +2,7 @@
 
 import sys
 import pandas as pd
+import time
 from vader_impl import Vader
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
@@ -10,6 +11,8 @@ from sentiment_analyzer import NormalizedObject
 from result import Result
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
+
+
 
 class TextAnalysis:
 
@@ -46,6 +49,7 @@ class TextAnalysis:
         print("test")
 
     def countSentimentHelper(self, vader, textblob, naivebayes):
+        t0 = time.time()
         numpos = 0
         numneg = 0
         numneu = 0
@@ -68,6 +72,9 @@ class TextAnalysis:
         if naivebayes.classifier == "neutral":
             numneu += 1
         sentiments = {"pos" : numpos, "neg" : numneg, "neu" : numneu}
+        t1 = time.time()
+        global total1
+        total1 = t1 - t0
         return sentiments
 
     def normalize(self, sentencelist):
@@ -192,9 +199,9 @@ class TextAnalysis:
         # if there are no keywords to look for, our work is done
         if keywords == None:
             return
-        
+
         # stemming all keywords for easier comparison
-        stemmer = PorterStemmer()
+        stemmer =  PorterStemmer()
         stemmed_keywords = []
         for keyword in keywords:
             stemmed_word = stemmer.stem(keyword)
