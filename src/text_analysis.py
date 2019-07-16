@@ -143,11 +143,12 @@ class TextAnalysis:
     #   - add sentence to dictionary, where each keyword is mapped to list of sentences
     #     with that keyword
     #   - return that dictionary
-    def getSentencesWithKeywords(self, stemmed_keywords):
+    def getSentencesWithKeywords(self, stemmed_keywords, keyword_dict):
         stemmer = PorterStemmer()
         dictionary = {}
         for keyword in stemmed_keywords:                     # add all keywords to dict
             dictionary[keyword] = []
+            keyword_dict[keyword] = 0
         for sentence in self.sentencelist:
             for keyword in stemmed_keywords:
                 # if this keyword is in this sentence, add it to the list of sentences
@@ -157,7 +158,10 @@ class TextAnalysis:
                 for word in words:                           # and stem all the words
                     stemmed_words.append(stemmer.stem(word)) # for easy comparison
                 if keyword in stemmed_words:
-                    dictionary[keyword].append(sentence)
+                    # We only want to store the first 4 sentences or so
+                    if len(dictionary[keyword]) < 4:
+                        dictionary[keyword].append(sentence)
+                    keyword_dict[keyword] += 1
         return dictionary
 
     def getResultsFromKeywordDictionary(self, dictionary):
@@ -195,7 +199,8 @@ class TextAnalysis:
 
         # dictionary with keywords for keys, mapped to lists of sentences with
         # that keyword
-        dictionary = self.getSentencesWithKeywords(stemmed_keywords)
+        keyword_dict = {}
+        dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
         print("======================= KEYWORD TO SENTENCES DICT ===========================")
         results = self.getResultsFromKeywordDictionary(dictionary) 
 
@@ -205,16 +210,6 @@ class TextAnalysis:
             stemmed_word = stemmer.stem(word)
             stemmed_words.append(stemmed_word)
 
-        keyword_dict = {}
-        # add all user-defined keywords to a dictionary, setting all counts to 0
-        for keyword in stemmed_keywords:
-            keyword_dict[keyword.lower()] = 0
-        # go through the extracted keywords, counting instances of each
-        # user-defined keyword as we go
-        for word in single_words:
-            stemmed_word = stemmer.stem(word)
-            if stemmed_word in keyword_dict.keys():
-                keyword_dict[stemmed_word] += 1
         print("======================= KEYWORD COUNTER DICT  ===========================")
         print(keyword_dict)
 
