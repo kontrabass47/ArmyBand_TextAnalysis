@@ -7,10 +7,12 @@ This project aims to analyze feedback of the Army Band through the use of text c
 [rake-nltk](https://github.com/csurfer/rake-nltk) is used to extract key words from text.  
 [Pandas](https://pandas.pydata.org/) is used to open and read the data files.  
 [tkinter](https://docs.python.org/3/library/tkinter.html) is used to create the graphical UI  
+[XlsxWriter](https://xlsxwriter.readthedocs.io/) is used to create and write to excel files  
 
 ## Other references
 None yet
 
 ## Getting Started
 Make sure your Python version is 3.x or later.  
-`pip install textblob vadersentiment pandas` if your native Python is 3.x. Use `pip3` otherwise.
+`pip install textblob vadersentiment pandas xlsxwriter` if your native Python is 3.x. Use `pip3` otherwise.  
+`python3 view.py` can get you started with usage. See output.xlsx for your results.
