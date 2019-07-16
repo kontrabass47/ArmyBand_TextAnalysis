@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b61a9c3-527e-4442-86bb-154264968507" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/text_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/text_analysis.py" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,8 +18,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/view.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="405">
               <caret line="36" column="10" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+=======
+            <state relative-caret-position="540">
+              <caret line="36" column="10" lean-forward="true" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -24,16 +32,47 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/text_analysis.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-478">
               <caret line="43" column="38" lean-forward="true" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+=======
+            <state relative-caret-position="285">
+              <caret line="28" column="6" lean-forward="true" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vader_impl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/textblob_impl.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/naive_bayes_impl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/vader_impl.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="409">
@@ -69,6 +108,8 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+=======
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
         <entry file="file://$PROJECT_DIR$/src/result.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
@@ -83,6 +124,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -95,6 +137,8 @@
     <option name="width" value="1400" />
     <option name="height" value="1040" />
   </component>
+=======
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -124,9 +168,12 @@
       <pane id="Scope" />
     </panes>
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
+=======
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -143,6 +190,7 @@
     <configuration />
   </component>
   <component name="TaskManager">
+<<<<<<< HEAD
     <task active="true" id="Default" summary="Default task">
       <changelist id="7b61a9c3-527e-4442-86bb-154264968507" name="Default Changelist" comment="" />
       <created>1563288150814</created>
@@ -150,15 +198,26 @@
       <option name="presentableId" value="Default" />
       <updated>1563288150814</updated>
     </task>
+=======
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="379" y="0" width="1400" height="1040" extended-state="0" />
-    <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24981844" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+=======
+      <window_info id="Favorites" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24981844" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.22052401" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -178,8 +237,13 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/view.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="405">
           <caret line="36" column="10" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+=======
+        <state relative-caret-position="540">
+          <caret line="36" column="10" lean-forward="true" selection-start-line="36" selection-start-column="10" selection-end-line="36" selection-end-column="10" />
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -218,8 +282,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/text_analysis.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-478">
           <caret line="43" column="38" lean-forward="true" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+=======
+        <state relative-caret-position="285">
+          <caret line="28" column="6" lean-forward="true" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vader_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/textblob_impl.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/naive_bayes_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+>>>>>>> 60fecddb13da73aedc1e757a3cfe70cd88275bd2
         </state>
       </provider>
     </entry>
