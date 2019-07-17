@@ -7,6 +7,9 @@ from sentiment_analyzer import SentimentObject
 # which is trained on movie reviews per their website.
 class NaiveBayes(SentimentAnalyzer):
 
+    def __init__(self):
+        self.analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
+
     # This analyzes a single string for sentiment. NOTICE that this method
     # asks that one passes in the naive bayes analyzer, since it's very
     # expensive to re-train it every time it's created.
@@ -34,7 +37,6 @@ class NaiveBayes(SentimentAnalyzer):
     def analyzeList(self, list):
         # reset sentiment list before each iteration
         self.sentimentList = []
-        tb = Blobber(analyzer=NaiveBayesAnalyzer())
         for sentence in list:
-            obj = self.analyzeString(sentence, tb)
+            obj = self.analyzeString(sentence, self.analyzer)
             self.sentimentList.append(obj)

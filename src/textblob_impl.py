@@ -2,6 +2,7 @@
 
 from textblob import TextBlob as TextBlobAnalyzer
 from textblob import Blobber
+from textblob.sentiments import PatternAnalyzer
 from sentiment_analyzer import SentimentAnalyzer
 from sentiment_analyzer import SentimentObject
 
@@ -14,22 +15,23 @@ class TextBlob(SentimentAnalyzer):
     #   - polarity is a scale from -1.0 to 1.0, from negative to positive
     #   - subjectivity is a scale from 0.0 to 1.0, a measure of how opinionated
     #     the sentence is
-    #def __init__(self):
+    def __init__(self):
+        self.analyzer = Blobber(analyzer=PatternAnalyzer())
 
     
     # Analyzes a single string for sentiment. This is a method that 
     # can be used on its own, but is also used in analyzeList as a helper
     def analyzeString(self, text):
-        analyzer = TextBlobAnalyzer(text)
+        analyzed = self.analyzer(text)
         obj = SentimentObject()
-        if analyzer.sentiment.polarity >= 0.001:
+        if analyzed.sentiment.polarity >= 0.001:
             obj.classifier = "positive"
-        elif analyzer.sentiment.polarity <= -0.001:
+        elif analyzed.sentiment.polarity <= -0.001:
             obj.classifier = "negative"
         else:
             obj.classifier = "neutral"
         obj.sentence = text
-        obj.aggregate = analyzer.sentiment.polarity
+        obj.aggregate = analyzed.sentiment.polarity
         return obj
 
 

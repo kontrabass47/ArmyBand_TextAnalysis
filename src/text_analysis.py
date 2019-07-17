@@ -112,7 +112,6 @@ class TextAnalysis:
 
     # Creates and returns a Result object.
     def getResultObj(self, word, sentencelist):
-
         self.vader.analyzeList(sentencelist)
         self.textblob.analyzeList(sentencelist)
         self.naivebayes.analyzeList(sentencelist)
@@ -156,19 +155,20 @@ class TextAnalysis:
         for keyword in stemmed_keywords:                     # add all keywords to dict
             dictionary[keyword] = []
             keyword_dict[keyword] = 0
+        test_counter_delete_later = 0
         for sentence in self.sentencelist:
+            print("getSentecesWithKeywords loop #{} at {}".format(test_counter_delete_later, datetime.now().time()))
+            test_counter_delete_later += 1
             for keyword in stemmed_keywords:
                 # if this keyword is in this sentence, add it to the list of sentences
                 # associated with this keyword
-                words = word_tokenize(sentence)
                 stemmed_words = []                           # tokenize this sentence
-                for word in words:                           # and stem all the words
-                    stemmed_words.append(stemmer.stem(word)) # for easy comparison
-                if keyword in stemmed_words:
-                    # We only want to store the first 4 sentences or so
-                    if len(dictionary[keyword]) < 4:
-                        dictionary[keyword].append(sentence)
-                    keyword_dict[keyword] += 1
+                for word in word_tokenize(sentence):         # and stem all the words
+                    if keyword == word:
+                        # We only want to store the first 4 sentences or so
+                        if len(dictionary[keyword]) < 4:
+                            dictionary[keyword].append(sentence)
+                        keyword_dict[keyword] += 1
         return dictionary
 
     def getResultsFromKeywordDictionary(self, dictionary):
@@ -218,7 +218,6 @@ class TextAnalysis:
     # note that there is NO guarantee that each sentence will be displayed only once.
     # sentences with more than one keyword can appear under multiple keywords
     def extractKeywords(self, keywords=None, stopwords=None):
-        print("extracting keywords at {}".format(datetime.now().time()))
         extractor = KeywordExtractor()
         extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
         joined_keywords = " ".join(extracted_keywords)
@@ -227,8 +226,6 @@ class TextAnalysis:
         # if there are no keywords to look for, our work is done
         if keywords == None:
             return
-        
-        print("stemming keywords at {}".format(datetime.now().time()))
 
         # stemming all keywords for easier comparison
         stemmer =  PorterStemmer()
@@ -240,9 +237,9 @@ class TextAnalysis:
         # dictionary with keywords for keys, mapped to lists of sentences with
         # that keyword
         keyword_dict = {}
-        print("getting sentences associated w/ keywords at {}".format(datetime.now().time()))
+        print("getSentencesWithKeywords at {}".format(datetime.now().time()))
         dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
-        print("building printable results at {}".format(datetime.now().time()))
+        print("getResultsFromKeywordDictionary at {}".format(datetime.now().time()))
         results = self.getResultsFromKeywordDictionary(dictionary) 
         print("creating output file at {}".format(datetime.now().time()))
         self.createOutputFile(results)
