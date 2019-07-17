@@ -153,22 +153,21 @@ class TextAnalysis:
         stemmer = PorterStemmer()
         dictionary = {}
         for keyword in stemmed_keywords:                     # add all keywords to dict
-            dictionary[keyword] = []
+            dictionary[keyword] = set()
             keyword_dict[keyword] = 0
-        test_counter_delete_later = 0
         for sentence in self.sentencelist:
-            print("getSentecesWithKeywords loop #{} at {}".format(test_counter_delete_later, datetime.now().time()))
-            test_counter_delete_later += 1
+            tokens = word_tokenize(sentence)
+            stemmed_tokens = list(map(stemmer.stem, tokens))
             for keyword in stemmed_keywords:
                 # if this keyword is in this sentence, add it to the list of sentences
                 # associated with this keyword
-                stemmed_words = []                           # tokenize this sentence
-                for word in word_tokenize(sentence):         # and stem all the words
+                for word in stemmed_tokens:
                     if keyword == word:
                         # We only want to store the first 4 sentences or so
                         if len(dictionary[keyword]) < 4:
-                            dictionary[keyword].append(sentence)
+                            dictionary[keyword].add(sentence)
                         keyword_dict[keyword] += 1
+                        continue
         return dictionary
 
     def getResultsFromKeywordDictionary(self, dictionary):
@@ -198,8 +197,8 @@ class TextAnalysis:
         sheet.write(0, 1, 'Sentences')
         rowCounter = 1
         for i in range(len(results)):
-            sentiment_percent = '%.3f'%(results[i].sentiment * 100)
-            confidence_percent = '%.3f'%(results[i].confidence * 100)
+            sentiment_percent = '%.1f'%(results[i].sentiment * 100)
+            confidence_percent = '%.1f'%(results[i].confidence * 100)
             sheet.write(rowCounter, 0, results[i].word)
             sheet.write(rowCounter + 1, 0, '{}% positive'.format(sentiment_percent))
             sheet.write(rowCounter + 2, 0, '{}% confident'.format(confidence_percent))
@@ -228,23 +227,19 @@ class TextAnalysis:
             return
 
         # stemming all keywords for easier comparison
-        stemmer =  PorterStemmer()
-        stemmed_keywords = []
+
+        stemmer = PorterStemmer()
+        stemmed_keywords = set()
         for keyword in keywords:
             stemmed_word = stemmer.stem(keyword)
-            stemmed_keywords.append(stemmed_word)
+            stemmed_keywords.add(stemmed_word)
 
         # dictionary with keywords for keys, mapped to lists of sentences with
         # that keyword
         keyword_dict = {}
-        print("getSentencesWithKeywords at {}".format(datetime.now().time()))
         dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
-        print("getResultsFromKeywordDictionary at {}".format(datetime.now().time()))
         results = self.getResultsFromKeywordDictionary(dictionary) 
-        print("creating output file at {}".format(datetime.now().time()))
         self.createOutputFile(results)
-        print("done extracting keywords at {}".format(datetime.now().time()))
-
 
 if __name__ == "__main__":
     textobj = TextAnalysis()
