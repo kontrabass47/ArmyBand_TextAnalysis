@@ -6,6 +6,9 @@ from sentiment_analyzer import SentimentObject
 
 # This class uses the Vader library to perform sentiment analysis on text
 class Vader(SentimentAnalyzer):
+    
+    def __init__(self):
+        self.analyzer = SentimentIntensityAnalyzer()
 
     # Analyzes a single string for sentiment. Used as a helper method
     # in AnalyzeList
@@ -32,9 +35,8 @@ class Vader(SentimentAnalyzer):
         self.sentimentList = []
         self.polarity = 0
         counter = 0
-        analyzer = SentimentIntensityAnalyzer()
         for sentence in list:
-            obj = self.analyzeString(sentence, analyzer)
+            obj = self.analyzeString(sentence, self.analyzer)
             self.polarity += obj.aggregate
             if (obj.classifier == "negative" or obj.classifier == "positive"):
                 counter += 1
