@@ -12,6 +12,7 @@ from sentiment_analyzer import NormalizedObject
 from result import Result
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class TextAnalysis:
 
@@ -160,7 +161,9 @@ class TextAnalysis:
                     if keyword == word:
                         # We only want to store the first 4 sentences or so
                         if len(dictionary[keyword]) < 4:
-                            dictionary[keyword].add(sentence)
+                            context = self.getContextOfSubstring(keyword, 
+                                    tokens, stemmed_tokens.index(keyword))
+                            dictionary[keyword].add(context)
                         keyword_dict[keyword] += 1
                         continue
         return dictionary
@@ -172,6 +175,13 @@ class TextAnalysis:
                 result = self.getResultObj(keyword, dictionary[keyword])
                 results.append(result)
         return results
+
+    def getContextOfSubstring(self, keyword, sentence_tokens, index):
+        leftLimit = (index - 5, 0)[index - 5 < 0]
+        rightLimit = (index + 5, len(sentence_tokens) - 1)[index + 5 >= len(sentence_tokens)]
+        context_tokens = sentence_tokens[leftLimit : rightLimit]
+        return TreebankWordDetokenizer().detokenize(context_tokens)
+        
 
     # creates the output file given a list of results. output is in the form of
     # an excel file
@@ -234,9 +244,3 @@ class TextAnalysis:
         dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
         results = self.getResultsFromKeywordDictionary(dictionary) 
         self.createOutputFile(results)
-
-if __name__ == "__main__":
-    textobj = TextAnalysis()
-    textobj.read()
-    textobj.extractKeywords()
-

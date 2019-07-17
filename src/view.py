@@ -158,5 +158,4 @@ uploadStopwordsButton.grid(row=4, column=1, sticky=W)
 fileSubmitButton.grid(row=4, column=2)
 
 fileResultsLabel.grid(row=5, column=1, sticky=W)
-
 root.mainloop()
