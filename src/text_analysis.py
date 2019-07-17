@@ -140,6 +140,13 @@ class TextAnalysis:
         result = Result(word, sentencelist, percentPositive, avg_confidence)
         return result
 
+    def getContextOfSubstring(self, sentence_tokens, index):
+        leftLimit = (index - 7, 0)[index - 7 < 0]
+        rightLimit = (index + 7, len(sentence_tokens) - 1)[index + 7 >= len(sentence_tokens)]
+        context_tokens = sentence_tokens[leftLimit : rightLimit]
+        print(TreebankWordDetokenizer().detokenize(context_tokens))
+        return TreebankWordDetokenizer().detokenize(context_tokens)
+
     # given pre-stemmed keywords:
     #   - loop through all sentences in data
     #   - add sentence to dictionary, where each keyword is mapped to list of sentences
@@ -161,8 +168,8 @@ class TextAnalysis:
                     if keyword == word:
                         # We only want to store the first 4 sentences or so
                         if len(dictionary[keyword]) < 4:
-                            context = self.getContextOfSubstring(keyword, 
-                                    tokens, stemmed_tokens.index(keyword))
+                            context = self.getContextOfSubstring(tokens, 
+                                    stemmed_tokens.index(keyword))
                             dictionary[keyword].add(context)
                         keyword_dict[keyword] += 1
                         continue
@@ -171,17 +178,10 @@ class TextAnalysis:
     def getResultsFromKeywordDictionary(self, dictionary):
         results = []
         for keyword in dictionary.keys():
-            if dictionary[keyword]:
+            if len(dictionary[keyword]) > 0:
                 result = self.getResultObj(keyword, dictionary[keyword])
                 results.append(result)
         return results
-
-    def getContextOfSubstring(self, keyword, sentence_tokens, index):
-        leftLimit = (index - 5, 0)[index - 5 < 0]
-        rightLimit = (index + 5, len(sentence_tokens) - 1)[index + 5 >= len(sentence_tokens)]
-        context_tokens = sentence_tokens[leftLimit : rightLimit]
-        return TreebankWordDetokenizer().detokenize(context_tokens)
-        
 
     # creates the output file given a list of results. output is in the form of
     # an excel file
