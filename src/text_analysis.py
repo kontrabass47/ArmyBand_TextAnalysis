@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
-import sys
 import pandas as pd
 import xlsxwriter as excel
-from datetime import datetime
 from vader_impl import Vader
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
@@ -144,7 +142,6 @@ class TextAnalysis:
         leftLimit = (index - 7, 0)[index - 7 < 0]
         rightLimit = (index + 7, len(sentence_tokens) - 1)[index + 7 >= len(sentence_tokens)]
         context_tokens = sentence_tokens[leftLimit : rightLimit]
-        print(TreebankWordDetokenizer().detokenize(context_tokens))
         return TreebankWordDetokenizer().detokenize(context_tokens)
 
     # given pre-stemmed keywords:
@@ -223,12 +220,12 @@ class TextAnalysis:
     # sentences with more than one keyword can appear under multiple keywords
     def extractKeywords(self, keywords=None, stopwords=None):
         extractor = KeywordExtractor()
-        extracted_keywords = extractor.extractKeywords(self.sentencelist, keywords, stopwords)
+        extracted_keywords = extractor.extractKeywords(self.sentencelist, stopwords)
         joined_keywords = " ".join(extracted_keywords)
         single_words = word_tokenize(joined_keywords)
 
         # if there are no keywords to look for, our work is done
-        if keywords == None:
+        if keywords is None:
             return
         
         # stemming all keywords for easier comparison
