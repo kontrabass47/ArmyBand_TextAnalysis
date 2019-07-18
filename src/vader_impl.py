@@ -41,4 +41,7 @@ class Vader(SentimentAnalyzer):
             if (obj.classifier == "negative" or obj.classifier == "positive"):
                 counter += 1
             self.sentimentList.append(obj)
-        self.polarity = self.polarity / counter
+        if counter == 0:
+            self.polarity = 0
+        else:
+            self.polarity = self.polarity / counter

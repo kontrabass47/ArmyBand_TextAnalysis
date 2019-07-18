@@ -12,6 +12,7 @@ from sentiment_analyzer import NormalizedObject
 from result import Result
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 class TextAnalysis:
 
@@ -139,6 +140,13 @@ class TextAnalysis:
         result = Result(word, sentencelist, percentPositive, avg_confidence)
         return result
 
+    def getContextOfSubstring(self, sentence_tokens, index):
+        leftLimit = (index - 7, 0)[index - 7 < 0]
+        rightLimit = (index + 7, len(sentence_tokens) - 1)[index + 7 >= len(sentence_tokens)]
+        context_tokens = sentence_tokens[leftLimit : rightLimit]
+        print(TreebankWordDetokenizer().detokenize(context_tokens))
+        return TreebankWordDetokenizer().detokenize(context_tokens)
+
     # given pre-stemmed keywords:
     #   - loop through all sentences in data
     #   - add sentence to dictionary, where each keyword is mapped to list of sentences
@@ -160,7 +168,9 @@ class TextAnalysis:
                     if keyword == word:
                         # We only want to store the first 4 sentences or so
                         if len(dictionary[keyword]) < 4:
-                            dictionary[keyword].add(sentence)
+                            context = self.getContextOfSubstring(tokens, 
+                                    stemmed_tokens.index(keyword))
+                            dictionary[keyword].add(context)
                         keyword_dict[keyword] += 1
                         continue
         return dictionary
@@ -168,7 +178,7 @@ class TextAnalysis:
     def getResultsFromKeywordDictionary(self, dictionary):
         results = []
         for keyword in dictionary.keys():
-            if dictionary[keyword]:
+            if len(dictionary[keyword]) > 0:
                 result = self.getResultObj(keyword, dictionary[keyword])
                 results.append(result)
         return results
@@ -234,9 +244,3 @@ class TextAnalysis:
         dictionary = self.getSentencesWithKeywords(stemmed_keywords, keyword_dict)
         results = self.getResultsFromKeywordDictionary(dictionary) 
         self.createOutputFile(results)
-
-if __name__ == "__main__":
-    textobj = TextAnalysis()
-    textobj.read()
-    textobj.extractKeywords()
-
