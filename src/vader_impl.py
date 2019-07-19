@@ -9,12 +9,13 @@ class Vader(SentimentAnalyzer):
     
     def __init__(self):
         self.analyzer = SentimentIntensityAnalyzer()
+        self.sentimentList = []
 
     # Analyzes a single string for sentiment. Used as a helper method
     # in AnalyzeList
     def analyzeString(self, text, analyzer=None):
         obj = SentimentObject()
-        if (analyzer == None):
+        if analyzer is None:
             analyzer = SentimentIntensityAnalyzer()
         vs = analyzer.polarity_scores(text)
 
@@ -38,10 +39,10 @@ class Vader(SentimentAnalyzer):
         for sentence in list:
             obj = self.analyzeString(sentence, self.analyzer)
             self.polarity += obj.aggregate
-            if (obj.classifier == "negative" or obj.classifier == "positive"):
+            if obj.classifier == "negative" or obj.classifier == "positive":
                 counter += 1
             self.sentimentList.append(obj)
         if counter == 0:
             self.polarity = 0
         else:
-            self.polarity = self.polarity / counter
+            self.polarity /= counter
