@@ -139,8 +139,8 @@ class TextAnalysis:
         return result
 
     def getContextOfSubstring(self, sentence_tokens, index):
-        leftLimit = (index - 7, 0)[index - 7 < 0]
-        rightLimit = (index + 7, len(sentence_tokens) - 1)[index + 7 >= len(sentence_tokens)]
+        leftLimit = (index - 15, 0)[index - 15 < 0]
+        rightLimit = (index + 15, len(sentence_tokens) - 1)[index + 15 >= len(sentence_tokens)]
         context_tokens = sentence_tokens[leftLimit : rightLimit]
         return TreebankWordDetokenizer().detokenize(context_tokens)
 
@@ -156,18 +156,17 @@ class TextAnalysis:
             dictionary[keyword] = set()
             keyword_dict[keyword] = 0
         for sentence in self.sentencelist:
-            tokens = word_tokenize(sentence)
-            stemmed_tokens = list(map(stemmer.stem, tokens))
+            stemmed_tokens = list(map(stemmer.stem, word_tokenize(sentence)))
             for keyword in stemmed_keywords:
                 # if this keyword is in this sentence, add it to the list of sentences
                 # associated with this keyword
                 for word in stemmed_tokens:
                     if keyword == word:
-                        # We only want to store the first 4 sentences or so
-                        if len(dictionary[keyword]) < 4:
-                            context = self.getContextOfSubstring(tokens, 
-                                    stemmed_tokens.index(keyword))
-                            dictionary[keyword].add(context)
+                        tokens = word_tokenize(sentence)
+                        stemmed_tokens = list(map(stemmer.stem, tokens))
+                        context = self.getContextOfSubstring(tokens, 
+                                stemmed_tokens.index(keyword))
+                        dictionary[keyword].add(context)
                         keyword_dict[keyword] += 1
                         continue
         return dictionary
