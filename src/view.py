@@ -5,10 +5,12 @@ import tkinter as tk
 from tkinter import Tk, StringVar, Label, Button, Entry
 from tkinter import N, W, messagebox
 from tkinter.filedialog import askopenfilename
+from PIL import ImageTk, Image
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
 from text_analysis import TextAnalysis
+from data_vis import dataVis
 
 fileUploadDefaultText = "Choose file"
 optionalUploadDefaultText = "Choose a file (optional)"
@@ -78,6 +80,12 @@ def submitFile():
     resultText += "Total Neutral: {}\n".format(analyzer.totalneu)
     resultText += "Total Confidence: {}%".format(round(analyzer.avgConfidence * 100, 2))
     uploadResultsString.set(resultText)
+    dataVis(fileName, stopwords)
+    img = ImageTk.PhotoImage(Image.open("./img.png"))
+    wordCloudLabel.configure(image = img)
+    wordCloudLabel.image = img
+    
+
     win.destroy()
 
     if keywordsName != optionalUploadDefaultText:
@@ -152,10 +160,10 @@ uploadStopwordsButton.bind("<Button-1>", uploadStopwords)
 
 # Row 6 widgets: File Analyzer Results Label
 uploadResultsString = StringVar()
-uploadResultsString.set("uploaded file results go here")
-fileResultsLabel = Label(root, anchor=N, textvariable=uploadResultsString, height=15)
+fileResultsLabel = Label(root, anchor=N, textvariable=uploadResultsString, height=5)
 
-
+# Row 7 widgets: Word Cloud Label
+wordCloudLabel = Label(root)
 
 # All widgets are organized in a grid here
 textLabel.grid(row=0, column=0, sticky=W)
@@ -176,5 +184,6 @@ fileSubmitButton.grid(row=4, column=2)
 
 fileResultsLabel.grid(row=5, column=1, sticky=W)
 
+wordCloudLabel.grid(row=6, column=1, sticky=W, pady=(0, 5))
 if __name__ == "__main__":
     root.mainloop()
