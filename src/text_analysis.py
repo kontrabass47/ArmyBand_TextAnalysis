@@ -36,7 +36,7 @@ class TextAnalysis:
 
         df_wp.dropna()
 
-        self.sentencelist = df_wp["Text"].tolist()
+        self.sentencelist = [str(sentence) for sentence in df_wp["Text"].tolist()] 
 
         self.normalize(self.sentencelist)
 
@@ -192,7 +192,7 @@ class TextAnalysis:
             sentences.append(result.sentences)
             sentiments.append(result.sentiment)
             confidences.append(result.confidence)
-        output = excel.Workbook('out.xlsx')
+        output = excel.Workbook('../out/out.xlsx')
         sheet = output.add_worksheet()
         sheet.set_column(0, 0, 20)
         sheet.write(0, 0, 'Word/% Positive/% Confidence')
