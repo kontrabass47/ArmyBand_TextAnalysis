@@ -11,12 +11,11 @@ class SentimentObject():
         self.aggregate = 0
         self.classifier = ""
 
+    def __str__(self):
+        return "Sentence: {} \nAggregate: {} \nClassifier: {}".format(self.sentence, self.aggregate, self.classifier)
+
 
 class NormalizedObject():
     def __init__(self):
         self.classifier = ""
         self.confidence = 0
-
-
-    def __str__(self):
-        return "Sentence: {} \nAggregate: {} \nClassifier: {}".format(self.sentence, self.aggregate, self.classifier)

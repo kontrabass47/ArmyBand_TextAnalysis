@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from textblob import TextBlob as TextBlobAnalyzer
 from textblob import Blobber
 from textblob.sentiments import PatternAnalyzer
 from sentiment_analyzer import SentimentAnalyzer

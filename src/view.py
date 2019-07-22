@@ -1,6 +1,7 @@
+#!/usr/bin/python3
+
 import pandas as pd
 import tkinter as tk
-from time import sleep
 from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry
 from tkinter import LEFT, N, W, filedialog, messagebox
 from tkinter.filedialog import askopenfilename
@@ -14,20 +15,25 @@ optionalUploadDefaultText = "Choose a file (optional)"
 defaultColumnName = "Text"
 # Receives a file that has been uploaded. NOTHING is done until the submit
 # button has been clicked
+
+
 def uploadFile(event):
     file = askopenfilename()
     if file:
         uploadFileButtonText.set(file)
+
 
 def uploadKeywords(event):
     file = askopenfilename()
     if file:
         uploadKeywordsButtonText.set(file)
 
+
 def uploadStopwords(event):
     file = askopenfilename()
     if file:
         uploadStopwordsButtonText.set(file)
+
 
 def submitFileWait(event):
     global win  # variable is global so it can be accessed in submitFile()
@@ -74,6 +80,14 @@ def submitFile():
     uploadResultsString.set(resultText)
     win.destroy()
 
+    if keywordsName == optionalUploadDefaultText:
+        winFinal = tk.Tk()
+        winFinal.wm_title("Output: ")
+
+        label = tk.Label(winFinal, text="Keyword file has been succesfully created!")
+        label.pack()
+
+
 # Receives a string, analyzes it, and displays the results
 def submitText(event):
     vader = Vader()                             # sentiment analysis tools
@@ -96,7 +110,10 @@ def submitText(event):
     resultText += "Confidence: {}%".format(round(textobj.normalizedList[0].confidence * 100, 2))
     textResultsString.set(resultText)
 
+
 # Initialize all widgets in GUI here
+
+
 root = Tk()
 root.title("Sentiment Analysis Tool")
 
