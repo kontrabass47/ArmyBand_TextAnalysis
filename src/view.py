@@ -2,6 +2,7 @@
 
 import pandas as pd
 import tkinter as tk
+import os
 from tkinter import Tk, StringVar, Label, Button, Entry
 from tkinter import N, W, messagebox
 from tkinter.filedialog import askopenfilename
@@ -84,7 +85,7 @@ def submitFile():
     img = ImageTk.PhotoImage(Image.open("../out/img.png"))
     wordCloudLabel.configure(image = img)
     wordCloudLabel.image = img
-    
+    os.remove("../out/img.png")    
 
     win.destroy()
 
