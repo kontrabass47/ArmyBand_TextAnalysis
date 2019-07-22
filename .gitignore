@@ -1,1 +1,6 @@
-.idea/*
+./.idea/
+./src/__pycache__/
+./src/*.xlsx
+./build
+./dist
+./*.spec
