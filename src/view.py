@@ -2,8 +2,8 @@
 
 import pandas as pd
 import tkinter as tk
-from tkinter import ttk, Tk, Frame, StringVar, Label, Button, Entry
-from tkinter import LEFT, N, W, filedialog, messagebox
+from tkinter import Tk, StringVar, Label, Button, Entry
+from tkinter import N, W, messagebox
 from tkinter.filedialog import askopenfilename
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
@@ -80,7 +80,7 @@ def submitFile():
     uploadResultsString.set(resultText)
     win.destroy()
 
-    if keywordsName == optionalUploadDefaultText:
+    if keywordsName != optionalUploadDefaultText:
         winFinal = tk.Tk()
         winFinal.wm_title("Output: ")
 
@@ -101,7 +101,7 @@ def submitText(event):
     nbObj = naivebayes.analyzeString(textInput) # SentimentObject objects
 
     arr = [textInput]
-    print("ERROR TESTING!!! textEntry array: ", arr)
+    textobj.normalize(arr)
 
     resultText = "Vader result: {}\n".format(vaderObj.classifier)
     resultText += "TextBlob result: {}\n".format(tbObj.classifier)

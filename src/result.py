@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 class Result:
     def __init__(self, word, sentences, sentiment, confidence):
         self.word = word

@@ -16,7 +16,7 @@ class TextBlob(SentimentAnalyzer):
     #     the sentence is
     def __init__(self):
         self.analyzer = Blobber(analyzer=PatternAnalyzer())
-
+        self.sentimentList = []
     
     # Analyzes a single string for sentiment. This is a method that 
     # can be used on its own, but is also used in analyzeList as a helper
@@ -38,16 +38,16 @@ class TextBlob(SentimentAnalyzer):
     # sentiment objects
     def analyzeList(self, list):
         # reset sentiment list and polarity before each iteration
-        self.sentimentList = []
         self.polarity = 0
+        self.sentimentList = []
         counter = 0
         for sentence in list:
             obj = self.analyzeString(sentence)
             self.polarity += obj.aggregate
-            if (obj.classifier == "negative" or obj.classifier == "positive"):
+            if obj.classifier == "negative" or obj.classifier == "positive":
                 counter += 1
             self.sentimentList.append(obj)
         if counter == 0:
             self.polarity = 0
         else:
-            self.polarity = self.polarity / counter
+            self.polarity /= counter

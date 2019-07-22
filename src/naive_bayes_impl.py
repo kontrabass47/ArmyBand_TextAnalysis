@@ -5,10 +5,13 @@ from sentiment_analyzer import SentimentObject
 
 # Sentiment analyzer using the Naive Bayes analyzer provided by Textblob,
 # which is trained on movie reviews per their website.
+
+
 class NaiveBayes(SentimentAnalyzer):
 
     def __init__(self):
         self.analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
+        self.sentimentList = []
 
     # This analyzes a single string for sentiment. NOTICE that this method
     # asks that one passes in the naive bayes analyzer, since it's very
@@ -18,7 +21,7 @@ class NaiveBayes(SentimentAnalyzer):
     # 5 seconds.
     def analyzeString(self, text, analyzer=None):
         # Again, try to avoid this! It takes a LONG time!
-        if analyzer == None:
+        if analyzer is None:
             analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
         sentiment = analyzer(text).sentiment
         obj = SentimentObject()
@@ -34,9 +37,9 @@ class NaiveBayes(SentimentAnalyzer):
         return obj
 
     # Analyzes a list of strings, using the analyzeString helper method.
-    def analyzeList(self, list):
+    def analyzeList(self, sentence_list):
         # reset sentiment list before each iteration
         self.sentimentList = []
-        for sentence in list:
+        for sentence in sentence_list:
             obj = self.analyzeString(sentence, self.analyzer)
             self.sentimentList.append(obj)
