@@ -207,9 +207,13 @@ class TextAnalysis:
             sheet.write(rowCounter, 0, results[i].word)
             sheet.write(rowCounter + 1, 0, '{}% positive'.format(sentiment_percent))
             sheet.write(rowCounter + 2, 0, '{}% confident'.format(confidence_percent))
+            written = 0 
             for sentence in sentences[i]:
                 sheet.write(rowCounter, 1, sentence)
                 rowCounter += 1
+                written += 1
+                if written > 2:
+                    break
             if len(sentences[i]) < 3:
                 rowCounter += (3 - len(sentences[i]))
             rowCounter += 1
