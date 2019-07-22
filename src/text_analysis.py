@@ -12,6 +12,8 @@ from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 
+
+
 class TextAnalysis:
 
     def __init__(self):
@@ -66,7 +68,6 @@ class TextAnalysis:
             numneu += 1
         sentiments = {"pos" : numpos, "neg" : numneg, "neu" : numneu}
         return sentiments
-
 
     def normalize(self, sentencelist):
         self.vader.analyzeList(sentencelist)
@@ -226,8 +227,9 @@ class TextAnalysis:
         # if there are no keywords to look for, our work is done
         if keywords is None:
             return
-        
+
         # stemming all keywords for easier comparison
+
         stemmer = PorterStemmer()
         stemmed_keywords = set()
         for keyword in keywords:

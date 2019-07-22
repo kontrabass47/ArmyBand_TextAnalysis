@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+# import nltk
+# nltk.downloader.download('vader_lexicon')
 from sentiment_analyzer import SentimentAnalyzer
 from sentiment_analyzer import SentimentObject
 
