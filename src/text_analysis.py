@@ -2,6 +2,7 @@
 
 import pandas as pd
 import xlsxwriter as excel
+import os
 from vader_impl import Vader
 from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
@@ -192,6 +193,8 @@ class TextAnalysis:
             sentences.append(result.sentences)
             sentiments.append(result.sentiment)
             confidences.append(result.confidence)
+        if not os.path.exists("../out/"):
+            os.makedirs("../out/")
         output = excel.Workbook('../out/out.xlsx')
         sheet = output.add_worksheet()
         sheet.set_column(0, 0, 20)

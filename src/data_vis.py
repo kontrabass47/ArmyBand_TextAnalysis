@@ -3,12 +3,16 @@
 
 import numpy as np
 import pandas as pd
-from os import path
+import os
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import matplotlib.pyplot as plt
 
-def dataVis(fileName, stopwords):
+
+# takes in a fileName and optional stopwords and creates a wordcloud
+# fileName must be either a csv or xlsx file
+# outputs a png image that the view displays in the UI
+def wordCloud(fileName, stopwords=None):
     df = pd.read_excel(fileName)
     default_stopwords = set(STOPWORDS)
     if stopwords is not None:
@@ -17,9 +21,7 @@ def dataVis(fileName, stopwords):
     sentences = " ".join(sentenceList)
     wordcloud = WordCloud(stopwords=default_stopwords, background_color="white")
     wordcloud.generate(sentences)
-
+    
+    if not os.path.exists("../out/"):
+        os.makedirs("../out/")
     wordcloud.to_file("../out/img.png")
-
-    #plt.imshow(wordcloud, interpolation='bilinear')
-    #plt.axis("off")
-    #plt.show()

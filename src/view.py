@@ -10,7 +10,7 @@ from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
 from text_analysis import TextAnalysis
-from data_vis import dataVis
+from data_vis import wordCloud
 
 fileUploadDefaultText = "Choose file"
 optionalUploadDefaultText = "Choose a file (optional)"
@@ -80,8 +80,8 @@ def submitFile():
     resultText += "Total Neutral: {}\n".format(analyzer.totalneu)
     resultText += "Total Confidence: {}%".format(round(analyzer.avgConfidence * 100, 2))
     uploadResultsString.set(resultText)
-    dataVis(fileName, stopwords)
-    img = ImageTk.PhotoImage(Image.open("./img.png"))
+    wordCloud(fileName, stopwords)
+    img = ImageTk.PhotoImage(Image.open("../out/img.png"))
     wordCloudLabel.configure(image = img)
     wordCloudLabel.image = img
     
