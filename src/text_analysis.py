@@ -238,8 +238,8 @@ class TextAnalysis:
                 sheet.write(rowCounter, 1, sentence)
                 rowCounter += 1
                 written += 1
-                if written > 5:
-                    break
+                #if written > 5:     # uncomment if you want to limit # of sentences 
+                #    break           # displayed per keyword in the out.xlsx file
             if len(sentences[i]) < 3:
                 rowCounter += (3 - len(sentences[i]))
             rowCounter += 1
