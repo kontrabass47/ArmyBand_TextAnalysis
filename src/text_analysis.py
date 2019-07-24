@@ -31,8 +31,8 @@ class TextAnalysis:
         self.totalneg = 0
         self.totalneu = 0
         self.avgConfidence = 0
-        self.normalizedList = [] # contains list of normalized objects
-        self.sentencelist = [] # contains list of sentences passed to program
+        self.normalizedList = []  # contains list of normalized objects
+        self.sentencelist = []  # contains list of sentences passed to program
         self.vader = Vader()
         self.textblob = TextBlob()
         self.naivebayes = NaiveBayes()
