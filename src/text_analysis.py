@@ -14,9 +14,18 @@ from nltk.tokenize import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 
-
+# This class is responsible for all things analyzing. It opens and reads files,
+# performs sentiment analysis, and creates the output file.
 class TextAnalysis:
 
+    # Constructor
+    #   - totalpos is the total number of positive sentences in the file
+    #   - totalneg is the total number of negative sentences in the file
+    #   - totalneu is the total number of neutral sentences in the file
+    #   - avgConfidence is the program's confidence in classifying the entire file
+    #   - normalizedList is each sentence's associated classifier/confidence
+    #   - sentenceList is the list of sentences to be analyzed from the file
+    #   - vader, textblob, naivebayes are all analyzers
     def __init__(self):
         self.totalpos = 0
         self.totalneg = 0
@@ -28,23 +37,27 @@ class TextAnalysis:
         self.textblob = TextBlob()
         self.naivebayes = NaiveBayes()
 
+    # opens and reads a given file with data, analyzes it, and outputs the results
+    #   - fileName is the name of the file. must be either excel or csv file
     def read(self, fileName):
         df_wp = None
         if ".xlsx" in fileName:
             df_wp = pd.read_excel(fileName)
         if ".csv" in fileName:
             df_wp = pd.read_csv(fileName)
-
         df_wp.dropna()
-
         self.sentencelist = [str(sentence) for sentence in df_wp["Text"].tolist()] 
-
         self.normalize(self.sentencelist)
-
         print("Total Positive: {} Total Negative: {} Total Neutral: {}"
                 .format(self.totalpos, self.totalneg, self.totalneu))
         print("Average Confidence: {}%".format(round(self.avgConfidence * 100, 2)))
 
+    # helper method for self.noramlize and self.getResultObj
+    # takes in the results from the vader, textblob, and naivebayes analyzers
+    # and determines the total number of positive, neutral, and negative ratings
+    # from all of the analyzers combined
+    # NOTE: once more analyzers are implemented, this method should take in a list
+    # of analyzed objects rather than individual ones
     def countSentimentHelper(self, vader, textblob, naivebayes):
         numpos = 0
         numneg = 0
@@ -70,7 +83,11 @@ class TextAnalysis:
         sentiments = {"pos" : numpos, "neg" : numneg, "neu" : numneu}
         return sentiments
 
-    # Calculates total values (positive, negative, neutral, confidence) without concatenating sentences.
+    # Analyzes a list of sentences and mutates this object's counters for total
+    # positive, neutral, and negative sentences. Additionally, it calculates and
+    # mutates the value for the average confidence for all given sentences
+    # This method also updates self.normalizedList to contain associated info
+    # for sentences in self.sentencelist
     def normalize(self, sentencelist):
         self.vader.analyzeList(sentencelist)
         self.textblob.analyzeList(sentencelist)
@@ -107,7 +124,8 @@ class TextAnalysis:
 
         self.avgConfidence = self.avgConfidence / len(self.vader.sentimentList)
 
-    # Creates and returns a Result object.
+    # Creates and returns a Result object. Does a similar thing to self.normalize
+    # but it does not mutate this object's member variables
     def getResultObj(self, word, sentencelist):
         self.vader.analyzeList(sentencelist)
         self.textblob.analyzeList(sentencelist)
@@ -141,6 +159,9 @@ class TextAnalysis:
         result = Result(word, sentencelist, percentPositive, avg_confidence)
         return result
 
+    # returns a substring of a sentence around a given index.
+    #   - sentence_tokens is a whitespace-delimited list of words in a sentence
+    #   - index is the index of the keyword in that split sentence
     def getContextOfSubstring(self, sentence_tokens, index):
         leftLimit = (index - 15, 0)[index - 15 < 0]
         rightLimit = (index + 15, len(sentence_tokens) - 1)[index + 15 >= len(sentence_tokens)]
@@ -174,6 +195,9 @@ class TextAnalysis:
                         continue
         return dictionary
 
+    # Loops through the given dictionary of keyword to sentences with that keyword
+    # and returns a list of Result objects that can be outputted to an excel file.
+    # Refer to self.getResultObj and result.py for details on the Result object.
     def getResultsFromKeywordDictionary(self, dictionary):
         results = []
         for keyword in dictionary.keys():
@@ -183,7 +207,8 @@ class TextAnalysis:
         return results
 
     # creates the output file given a list of results. output is in the form of
-    # an excel file
+    # an excel file called out.xlsx in the out/ directory.
+    # each keyword will only have the first 5 associated sentences printed
     def createOutputFile(self, results):
         words = []       # list of keywords
         sentences = []   # list of lists of sentences
@@ -213,8 +238,8 @@ class TextAnalysis:
                 sheet.write(rowCounter, 1, sentence)
                 rowCounter += 1
                 written += 1
-                #if written > 2:
-                #    break
+                if written > 5:
+                    break
             if len(sentences[i]) < 3:
                 rowCounter += (3 - len(sentences[i]))
             rowCounter += 1

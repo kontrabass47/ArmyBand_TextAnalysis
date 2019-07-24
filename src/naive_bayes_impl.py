@@ -5,10 +5,9 @@ from sentiment_analyzer import SentimentObject
 
 # Sentiment analyzer using the Naive Bayes analyzer provided by Textblob,
 # which is trained on movie reviews per their website.
-
-
 class NaiveBayes(SentimentAnalyzer):
 
+    # Constructor - initializes the analyzer and the sentiment list
     def __init__(self):
         self.analyzer = Blobber(analyzer=NaiveBayesAnalyzer())
         self.sentimentList = []
