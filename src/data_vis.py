@@ -3,6 +3,7 @@
 
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import os
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
@@ -13,7 +14,11 @@ import matplotlib.pyplot as plt
 # fileName must be either a csv or xlsx file
 # outputs a png image that the view displays in the UI
 def wordCloud(fileName, stopwords=None):
-    df = pd.read_excel(fileName)
+    df = None
+    if ".xlsx" in fileName:
+        df = pd.read_excel(fileName)
+    elif ".csv" in fileName:
+        df = pd.read_csv(fileName)
     default_stopwords = set(STOPWORDS)
     if stopwords is not None:
         default_stopwords.update(stopwords)
@@ -25,3 +30,12 @@ def wordCloud(fileName, stopwords=None):
     if not os.path.exists("../out/"):
         os.makedirs("../out/")
     wordcloud.to_file("../out/img.png")
+
+def barGraph(fileName):
+    sns.set(style="whitegrid")
+    df = None
+    if ".xlsx" in fileName:
+        df = pd.read_excel(fileName)
+    elif ".csv" in fileName:
+        df = pd.read_csv(fileName)
+    ax = sns.barplot(x="Category", y="Sentences", data=df)

@@ -11,7 +11,7 @@ from textblob_impl import TextBlob
 from naive_bayes_impl import NaiveBayes
 from vader_impl import Vader
 from text_analysis import TextAnalysis
-from data_vis import wordCloud
+from data_vis import wordCloud, barGraph
 
 fileUploadDefaultText = "Choose file"
 optionalUploadDefaultText = "Choose a file (optional)"
@@ -86,6 +86,8 @@ def submitFile():
     wordCloudLabel.configure(image = img)
     wordCloudLabel.image = img
     os.remove("../out/img.png")    
+   
+    #barGraph("../out/out.xlsx")
 
     win.destroy()
 

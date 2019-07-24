@@ -198,7 +198,7 @@ class TextAnalysis:
         output = excel.Workbook('../out/out.xlsx')
         sheet = output.add_worksheet()
         sheet.set_column(0, 0, 20)
-        sheet.write(0, 0, 'Word/% Positive/% Confidence')
+        sheet.write(0, 0, 'Category')
         sheet.write(0, 1, 'Sentences')
         rowCounter = 1
         for i in range(len(results)):
@@ -212,8 +212,8 @@ class TextAnalysis:
                 sheet.write(rowCounter, 1, sentence)
                 rowCounter += 1
                 written += 1
-                if written > 2:
-                    break
+                #if written > 2:
+                #    break
             if len(sentences[i]) < 3:
                 rowCounter += (3 - len(sentences[i]))
             rowCounter += 1
