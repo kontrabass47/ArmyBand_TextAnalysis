@@ -22,8 +22,8 @@ class TextAnalysis:
         self.totalneg = 0
         self.totalneu = 0
         self.avgConfidence = 0
-        self.normalizedList = [] # contains list of normalized objects
-        self.sentencelist = [] # contains list of sentences passed to program
+        self.normalizedList = []  # contains list of normalized objects
+        self.sentencelist = []  # contains list of sentences passed to program
         self.vader = Vader()
         self.textblob = TextBlob()
         self.naivebayes = NaiveBayes()
@@ -70,6 +70,7 @@ class TextAnalysis:
         sentiments = {"pos" : numpos, "neg" : numneg, "neu" : numneu}
         return sentiments
 
+    # Calculates total values (positive, negative, neutral, confidence) without concatenating sentences.
     def normalize(self, sentencelist):
         self.vader.analyzeList(sentencelist)
         self.textblob.analyzeList(sentencelist)
