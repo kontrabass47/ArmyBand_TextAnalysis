@@ -1,14 +1,11 @@
 #!/usr/bin/python3
-from rake_nltk import Metric, Rake
 import nltk
+from rake_nltk import Metric, Rake
 
-'''
-This class takes in a list of strings, concatenates them into a single
-paragraph, and then extracts key words/themes.
-'''
-
-
+# This class takes in a list of strings, concatenates them into a single
+# paragraph, and then extracts key words/themes.
 class KeywordExtractor:
+ 
     # extracts the first 30 key phrases, which are at most 7 words long,
     # and returns them. 30 are chosen because they are the most relevant
     def extractKeywords(self, sentences, user_stopwords=None):
@@ -28,4 +25,4 @@ class KeywordExtractor:
         text = " ".join(sentences)
         rake.extract_keywords_from_text(text)
         keywords = rake.get_ranked_phrases()
-        return keywords[0:100]
+        return keywords[0:30]

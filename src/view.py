@@ -16,21 +16,18 @@ from data_vis import wordCloud, barGraph
 fileUploadDefaultText = "Choose file"
 optionalUploadDefaultText = "Choose a file (optional)"
 defaultColumnName = "Text"
+
 # Receives a file that has been uploaded. NOTHING is done until the submit
 # button has been clicked
-
-
 def uploadFile(event):
     file = askopenfilename()
     if file:
         uploadFileButtonText.set(file)
 
-
 def uploadKeywords(event):
     file = askopenfilename()
     if file:
         uploadKeywordsButtonText.set(file)
-
 
 def uploadStopwords(event):
     file = askopenfilename()
@@ -123,8 +120,6 @@ def submitText(event):
 
 
 # Initialize all widgets in GUI here
-
-
 root = Tk()
 root.title("Sentiment Analysis Tool")
 
@@ -188,5 +183,6 @@ fileSubmitButton.grid(row=4, column=2)
 fileResultsLabel.grid(row=5, column=1, sticky=W)
 
 wordCloudLabel.grid(row=6, column=1, sticky=W, pady=(0, 5))
+
 if __name__ == "__main__":
     root.mainloop()

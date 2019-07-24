@@ -8,6 +8,9 @@ This project aims to analyze feedback of the Army Band through the use of text c
 [Pandas](https://pandas.pydata.org/) is used to open and read the data files.  
 [tkinter](https://docs.python.org/3/library/tkinter.html) is used to create the graphical UI  
 [XlsxWriter](https://xlsxwriter.readthedocs.io/) is used to create and write to excel files  
+[wordcloud](https://github.com/amueller/word_cloud) is used to create the wordcloud  
+[seaborn](https://seaborn.pydata.org/#) is used for bar graphs and general data vis  
+[tableau](https://www.tableau.com/) is used for other data vis stuff  
 
 ## Other references
 None yet
