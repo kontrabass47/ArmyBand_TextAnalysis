@@ -18,4 +18,5 @@ None yet
 ## Getting Started
 Make sure your Python version is 3.x or later.  
 `pip install textblob vadersentiment pandas xlsxwriter` if your native Python is 3.x. Use `pip3` otherwise.  
+I may have forgotten a few dependencies - if you are missing `nltk` or other related dependencies, `pip`/`pip3` will be able to install those for you.  
 `python3 src/view.py` can get you started with usage. See output.xlsx for your results.  
